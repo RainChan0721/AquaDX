@@ -1,7 +1,7 @@
 [
-	{"charge_id": 2020, "order_id": 0, "price": 1, "sale_price": 1},
-	{"charge_id": 2040, "order_id": 1, "price": 1, "sale_price": 1},
-	{"charge_id": 2060, "order_id": 2, "price": 1, "sale_price": 1},
-	{"charge_id": 2070, "order_id": 3, "price": 1, "sale_price": 1},
-	{"charge_id": 2080, "order_id": 4, "price": 1, "sale_price": 1}
+	{"chargeId": 2020, "orderId": 0, "price": 1, "salePrice": 1},
+	{"chargeId": 2040, "orderId": 1, "price": 1, "salePrice": 1},
+	{"chargeId": 2060, "orderId": 2, "price": 1, "salePrice": 1},
+	{"chargeId": 2070, "orderId": 3, "price": 1, "salePrice": 1},
+	{"chargeId": 2080, "orderId": 4, "price": 1, "salePrice": 1}
 ]

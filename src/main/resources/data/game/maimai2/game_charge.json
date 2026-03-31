@@ -1,7 +1,7 @@
 [
-	{"order_id": 1, "charge_id": 2, "price": 1},
-	{"order_id": 2, "charge_id": 3, "price": 2},
-	{"order_id": 3, "charge_id": 4, "price": 3},
-	{"order_id": 4, "charge_id": 5, "price": 4},
-	{"order_id": 5, "charge_id": 6, "price": 5}
+	{"orderId": 1, "chargeId": 2, "price": 1},
+	{"orderId": 2, "chargeId": 3, "price": 2},
+	{"orderId": 3, "chargeId": 4, "price": 3},
+	{"orderId": 4, "chargeId": 5, "price": 4},
+	{"orderId": 5, "chargeId": 6, "price": 5}
 ]

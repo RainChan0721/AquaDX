@@ -3,10 +3,11 @@
 <script lang="ts">
   import {
     type AquaNetUser,
+    type GameUserOption,
     type UserBox,
     type UserItem,
   } from "../../libs/generalTypes";
-  import { DATA, USER, USERBOX, GAME } from "../../libs/sdk";
+  import { DATA, USER, USERBOX, GAME, SETTING } from "../../libs/sdk";
   import { t, ts } from "../../libs/i18n";
   import { FADE_IN, FADE_OUT, USERBOX_DEFAULT_URL } from "../../libs/config";
   import { fade, slide } from "svelte/transition";
@@ -23,10 +24,14 @@
   import { DDS } from "../../libs/userbox/dds";
   import ChuniMatchingSettings from "./ChuniMatchingSettings.svelte";
   import InputField from "../ui/InputField.svelte";
+  import UserOptionSlider from "./UserOptionSlider.svelte";
 
   let user: AquaNetUser
   let [loading, error, submitting, preview] = [true, "", "", ""]
   let changed: string[] = [];
+
+  let userOptions: GameUserOption = {};
+  let userIsUsingPreset = false;
 
   // Available (unlocked) options for each kind of item
   // In allItems: 'namePlate', 'frame', 'trophy', 'mapIcon', 'systemVoice', 'avatarAccessory'
@@ -89,6 +94,13 @@
     console.log("All items", allItems)
     console.log("Userbox", userbox)
 
+    userOptions = await SETTING.optionGet('chu3').catch(_ => {
+      loading = false
+      error = t("userbox.error.nodata")
+    }) as GameUserOption
+    if (userOptions["optionSet"] != 3)
+      userIsUsingPreset = true;
+    
     loading = false
   }
 
@@ -312,6 +324,39 @@
 
     <InputField bind:field={userNameField}
       callback={() => USERBOX.setUserBox({ field: "userName", value: userNameField.value })}/>
+
+    <!-- User Options -->
+    {#if userIsUsingPreset}
+      <blockquote class="info">
+        {t('settings.options.all.preset-warning')}
+      </blockquote>
+    {/if}
+    <div class="fields-ranges">
+      <UserOptionSlider 
+        game="chu3" type="headphone" 
+        minValue={0} maxValue={60} 
+        defaultValue={userOptions["headphone"]} 
+        getTextFunction={(value: number) => `${((value / 60) * 100).toFixed(0)}%`} 
+       />
+      <UserOptionSlider 
+        game="chu3" type="trackSkip" 
+        minValue={0} maxValue={7} 
+        defaultValue={userOptions["trackSkip"]} 
+        getTextFunction={(value: number) => [t('settings.options.all.none'), `S`, `S+`, `SS`, `SS+`, `SSS`, `SSS+`, t('settings.options.all.personal-best')][value]} 
+      />
+      <UserOptionSlider 
+        game="chu3" type="speed" 
+        minValue={0} maxValue={61} 
+        defaultValue={userOptions["speed"]} 
+        getTextFunction={(value: number) => value >= 61 ? "SONIC" : value < 55 ? `${(value / 4) + 1}` : `${value - 40}`} 
+      />
+      <UserOptionSlider 
+        game="chu3" type="speed_120" 
+        minValue={0} maxValue={61} 
+        defaultValue={userOptions["speed_120"]} 
+        getTextFunction={(value: number) => value >= 61 ? "SONIC" : value < 55 ? `${(value / 4) + 1}` : `${value - 40}`} 
+      />
+    </div>
   </div>
   <h2>{t("userbox.header.userbox")}</h2>
   {#if !USERBOX_ENABLED.value || !USERBOX_INSTALLED}
@@ -394,6 +439,7 @@
       {/each}
     </div>
   {/if}
+
   {#if USERBOX_INSTALLED}
     <!-- god this is a mess but idgaf atp -->
     <div class="field boolean" style:margin-top="1em">
@@ -593,6 +639,18 @@ p.notice
 
     .desc
       opacity: 0.6
+
+
+.fields-ranges
+  display: flex
+  flex-wrap: wrap
+  margin: 0.5rem 0
+  gap: 0 1rem
+  justify-content: center
+
+  :global(.field)
+    flex: calc(50% - 1rem)
+    width: 50%
 
 /* AquaBox */
 

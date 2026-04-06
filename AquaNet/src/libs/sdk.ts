@@ -9,7 +9,8 @@ import type {
   AquaNetUser, GameOption,
   UserBox,
   UserItem,
-  Dict
+  Dict,
+  GameUserOption
 } from './generalTypes'
 import type { GameName } from './scoring'
 
@@ -255,6 +256,10 @@ export const SETTING = {
     post('/api/v2/settings/set', { key, value: `${value}` }),
   detailSet: (game: string, field: string, value: any) =>
     post(`/api/v2/game/${game}/user-detail-set`, { field, value }),
+  optionGet: (game: string): Promise<GameUserOption> => 
+    post(`/api/v2/game/${game}/user-option`),
+  optionSet: (game: string, field: string, value: number): Promise<void> => 
+    post(`/api/v2/game/${game}/user-option-set`, { field, value }),
 }
 
 export const TRANSFER = {

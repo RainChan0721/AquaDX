@@ -137,6 +137,8 @@ export interface GameOption {
   changed?: boolean
 }
 
+export type GameUserOption = Record<string, number>
+
 export interface UserItem { itemKind: number, itemId: number, stock: number }
 export interface UserBox {
   userName: string,

@@ -4,9 +4,11 @@
   import { t } from "../../libs/i18n.js";
   import Icon from "@iconify/svelte";
   import StatusOverlays from "../StatusOverlays.svelte";
-  import { GAME, USER } from "../../libs/sdk";
+  import { GAME, SETTING, USER } from "../../libs/sdk";
   import GameSettingFields from "./GameSettingFields.svelte";
   import { download } from "../../libs/ui";
+  import UserOptionSlider from "./UserOptionSlider.svelte";
+  import type { GameUserOption } from "../../libs/generalTypes";
 
   const profileFields = [
     ['name', t('settings.mai2.name')],
@@ -14,12 +16,24 @@
 
   let error: string
   let submitting = ""
+  let loading = true
   let values = Array(profileFields.length).fill('')
   let changed: string[] = []
 
+  let userOptions: GameUserOption = {}
+  let userIsUsingPreset = false
+
   USER.me().then(me => 
-    GAME.userSummary(me.username, 'mai2').then(({name}) => {
+    GAME.userSummary(me.username, 'mai2').then(async ({name}) => {
       values = [name]
+
+      userOptions = await SETTING.optionGet('mai2').catch(_ => {
+        error = t("userbox.error.nodata")
+        loading = true
+      }) as GameUserOption
+      if (userOptions["optionKind"] != 3)
+        userIsUsingPreset = true
+      loading = false
     }).catch(e => error = e.message));
 
   function submit(field: string, value: string) {
@@ -208,6 +222,7 @@
   }
 </script>
 
+{#if !loading}
 <div class="fields">
   {#each profileFields as [field, name], i (field)}
     <div class="field">
@@ -228,6 +243,55 @@
       </div>
     </div>
   {/each}
+  {#if userIsUsingPreset}
+    <blockquote class="info">
+      {t('settings.options.all.preset-warning')}
+    </blockquote>
+  {/if}
+  <div class="fields-ranges">
+    <!-- TODO: determine min & max -->
+    <UserOptionSlider 
+      game="mai2" type="noteSpeed"
+      minValue={0} maxValue={37} 
+      defaultValue={userOptions["noteSpeed"]} 
+      getTextFunction={(value: number) => value >= 37 ? "SONIC" : `${(value / 4) + 1}`} 
+    />
+    <UserOptionSlider 
+      game="mai2" type="touchSpeed"
+      minValue={0} maxValue={37} 
+      defaultValue={userOptions["touchSpeed"]} 
+      getTextFunction={(value: number) => value >= 37 ? "SONIC" : `${(value / 4) + 1}`} 
+    />
+    <UserOptionSlider 
+      game="mai2" type="slideSpeed"
+      minValue={0} maxValue={20} 
+      defaultValue={userOptions["slideSpeed"]} 
+      getTextFunction={(value: number) => value == 10 ? "Normal" : `${value > 10 ? "Late" : "Fast"} ${(Math.abs(value - 10) / 10).toFixed(1)}`} 
+    />
+    <UserOptionSlider 
+      game="mai2" type="headPhoneVolume" 
+      minValue={0} maxValue={19} 
+      defaultValue={userOptions["headPhoneVolume"]} 
+      getTextFunction={(value: number) => `${((value / 19) * 100).toFixed(0)}%`} 
+    />
+    <UserOptionSlider 
+      game="mai2" type="trackSkip" 
+      minValue={0} maxValue={11} 
+      defaultValue={userOptions["trackSkip"]} 
+      getTextFunction={(value: number) => [
+        t('settings.options.all.none'), 
+        t('settings.options.all.push'), 
+        `S`, `SS`, `SSS`, 
+        t('settings.options.all.personal-best'), 
+        t('settings.options.all.rival-score'), 
+        `${t('settings.options.all.life')} 300`,
+        `${t('settings.options.all.life')} 100`,
+        `${t('settings.options.all.life')} 50`,
+        `${t('settings.options.all.life')} 10`,
+        `${t('settings.options.all.life')} 1`
+      ][value]} 
+    />
+  </div>
   <GameSettingFields game="mai2"/>
   <button class="exportButton" on:click={exportData}>
     <Icon icon="bxs:file-export"/>
@@ -238,8 +302,9 @@
     {t('settings.batchManualExport')}
   </button>
 </div>
+{/if}
 
-<StatusOverlays {error} loading={!values[0] || !!submitting}/>
+<StatusOverlays {error} loading={!values[0] || !!submitting || loading}/>
 
 <style lang="sass">
   .fields
@@ -262,6 +327,17 @@
 
       > input
         flex: 1
+
+  .fields-ranges
+    display: flex
+    flex-wrap: wrap
+    margin: 0.5rem 0
+    gap: 0 1rem
+    justify-content: center
+
+    :global(.field)
+      flex: calc(50% - 1rem)
+      width: 50%
 
   .exportButton
     display: flex

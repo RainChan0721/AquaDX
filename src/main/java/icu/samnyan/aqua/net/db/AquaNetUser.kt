@@ -208,7 +208,7 @@ class AquaUserServices(
     fun validKeychip(keychipId: Str): Bool {
         if (!allNetProps.checkKeychip) return true
         if (keychipId.isBlank()) return false
-        if (userKeychipRepo.existsByKeychipId(keychipId)) return true
+        if (userKeychipRepo.findByKeychipIdStartingWith(keychipId).truthy) return true
         return false
     }
 

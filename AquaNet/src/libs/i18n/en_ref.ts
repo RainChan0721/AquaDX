@@ -142,7 +142,7 @@ export const EN_REF_HOME = {
 
 export const EN_REF_SETUP = {
   'setup.welcome': `Welcome! If you have a game set up, please follow the instructions below to set up the connection with AquaDX.`,
-  'setup.keychip-warning': `Your keychip is linked to your account and should be kept secure. Do not give others your keychip.`,
+  'setup.keychip-warning': `Your keychip(s) are linked to your account and should be kept secure.`,
   'setup.steps.one': `Pick a method of setting up network communications. Some browsers may not be able to do automatic setup.`,
   'setup.steps.two': `Ensure your game has encryption disabled as AquaDX does not support encryption. This may be via a patch or setting.`,
   'setup.steps.three': `Link your Aime card to your AquaDX account using the <a href="/cards">Cards</a> page via it's access code or serial number.`,
@@ -155,7 +155,12 @@ export const EN_REF_SETUP = {
   'setup.automatic': `Select your segatools.ini below to autofill the network information.`,
   'setup.automatic.success': `Success, data has been updated`,
   'setup.automatic.failure': `Failed to update information, please ensure access is not blocked and try again.`,
-  'setup.automatic.select': `Pick file`
+  'setup.automatic.select': `Pick file`,
+  'setup.keychip': 'Keychip Management',
+  'setup.keychip.warning': 'Keychips can be manually set here for cabinet owners with physical keychips trying to connect to AquaDX. Selecting a keychip will autofill it for the setup below.',
+  'setup.keychip.add': `Add keychip`,
+  'setup.keychip.delete': `Delete`,
+  'setup.keychip.placeholder': `New Keychip ID`
 }
 
 export const EN_REF_SETTINGS = {

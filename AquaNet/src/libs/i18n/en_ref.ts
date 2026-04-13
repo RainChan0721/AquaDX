@@ -144,10 +144,9 @@ export const EN_REF_SETUP = {
   'setup.welcome': `Welcome! If you have a game set up, please follow the instructions below to set up the connection with AquaDX.`,
   'setup.keychip-warning': `Your keychip(s) are linked to your account and should be kept secure.`,
   'setup.steps.one': `Pick a method of setting up network communications. Some browsers may not be able to do automatic setup.`,
-  'setup.steps.two': `Ensure your game has encryption disabled as AquaDX does not support encryption. This may be via a patch or setting.`,
-  'setup.steps.three': `Link your Aime card to your AquaDX account using the <a href="/cards">Cards</a> page via it's access code or serial number.`,
-  'setup.steps.four': `Start the game. Upon reaching the title screen, the network icon in the corner should now show green instead of grey.`,
-  'setup.support-info': `If you need assistance, feel free to make an inquiry in a <a href="/support">support channel</a>.`,
+  'setup.steps.two': `Link your Aime card to your AquaDX account using the <a href="/cards">Cards</a> page via it's access code or serial number.`,
+  'setup.steps.three': `Start the game. Upon reaching the title screen, the network icon in the corner should now show green instead of grey.`,
+  'setup.support-info': `If you need additional assistance, feel free to make an inquiry in a <a href="/support">support channel</a>.`,
   'setup.reveal-keychip': `Reveal keychip`,
   'setup.type.automatic': `Automatic Setup`,
   'setup.type.manual': `Manual Setup`,
@@ -156,6 +155,15 @@ export const EN_REF_SETUP = {
   'setup.automatic.success': `Success, data has been updated`,
   'setup.automatic.failure': `Failed to update information, please ensure access is not blocked and try again.`,
   'setup.automatic.select': `Pick file`,
+  'setup.troubleshooting.header': 'Setup Troubleshooting (FAQ)',
+  'setup.troubleshooting.items.one': `» It displays DNS BAD on Network Test<br>
+    You likely misconfigured your segatools.ini. Ensure it's pointing to the DNS shown above (under Manual Setup).`,
+  'setup.troubleshooting.items.two': `» It displays タイトル サーバー BAD (Title Server BAD) on Network Test<br>
+    You should check your segatools.ini to ensure your keychip is set correctly.<br>
+    Additionally, Card Maker users and players using a game version higher than what's listed may need to disable encryption
+    <a target="_blank" href="https://gitea.tendokyu.moe/Dniel97/SEGAguide/wiki/SDED#patching-assemblycsharpdll">(instructions for Card Maker)</a>`,
+  'setup.troubleshooting.items.three': `» I can't scan my card<br>
+    The built-in emulated card reader, by default, is configured to use the Enter / Return key to scan in (hold the key).`,
   'setup.keychip': 'Keychip Management',
   'setup.keychip.warning': 'Keychips can be manually set here for cabinet owners with physical keychips trying to connect to AquaDX. Selecting a keychip will autofill it for the setup below.',
   'setup.keychip.add': `Add keychip`,

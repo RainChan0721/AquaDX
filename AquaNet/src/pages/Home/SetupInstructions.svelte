@@ -201,10 +201,18 @@ ${keychipLines}`.trim(), {
       <div class="setup-step">
         3. <div>{@html t('setup.steps.three')}</div>
       </div>
-      <div class="setup-step">
-        4. <div>{@html t('setup.steps.four')}</div>
-      </div>
-
+      <h2>{t('setup.troubleshooting.header')}</h2>
+      <ul>
+        <li>
+          {@html t('setup.troubleshooting.items.one')}
+        </li>
+        <li>
+          {@html t('setup.troubleshooting.items.two')}
+        </li>
+        <li>
+          {@html t('setup.troubleshooting.items.three')}
+        </li>
+      </ul>
       <p>
         {@html t('setup.support-info')}
       </p>
@@ -217,6 +225,9 @@ ${keychipLines}`.trim(), {
   .code
     overflow-x: auto
 
+  ul
+    li
+      margin: 0.75em 0
   .divider
     width: 90%
     height: 1px

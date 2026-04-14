@@ -107,7 +107,7 @@
       validate={v => /^https?:\/\/[a-z0-9.-]+(:\d+)?$/i.test(v)} />
     <InputTextShort desc={t('trans.field.keychip')} placeholder="e.g. A0299792458"
       bind:value={src.keychip} on:change disabled={tested}
-      validate={v => /^([A-Z0-9]{11}|[A-Z0-9]{4}-[A-Z0-9]{11})$/.test(v)} />
+      validate={v => /^([A-Z\d]{15}|[A-Z\d]{4}-[A-Z\d]{11})$/.test(v)} />
   </div>
 
   <!-- Second input line -->

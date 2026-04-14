@@ -71,9 +71,9 @@ ${keychipLines}`.trim(), {
 
   async function addKeychip() {
     const rawKeychipId = newKeychip.trim().toUpperCase();
-    const validRawFormat = /^A\d{14}$/.test(rawKeychipId) || /^A\d{3}-\d{11}$/.test(rawKeychipId);
+    const validRawFormat = /^([A-Z\d]{4}-[A-Z\d]{11}|[A-Z\d]{15})$/.test(rawKeychipId);
     if (!validRawFormat) {
-      addKeychipError = "Invalid keychip format; use A12345678901234 or A123-12345678901.";
+      addKeychipError = "Invalid keychip format. Use 15 characters (with optional dash): A12345678901234 or A123-12345678901.";
       return;
     }
 

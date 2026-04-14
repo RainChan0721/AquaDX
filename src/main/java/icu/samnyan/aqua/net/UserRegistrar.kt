@@ -241,8 +241,7 @@ class UserRegistrar(
         SUCCESS
     }
 
-    val keychipPattern = Regex("^A\\d{14}$")
-    val dashedKeychipPattern = Regex("^A\\d{3}-\\d{11}$")
+    val keychipPattern = Regex("^([A-Z\\d]{4}-[A-Z\\d]{11}|[A-Z\\d]{15})$")
     val keychipRange = 1e9.toULong()..1e10.toULong() - 1UL
 
 
@@ -252,13 +251,11 @@ class UserRegistrar(
 
     private fun validateCustomKeychip(keychipId: Str): Str {
         val raw = keychipId.trim().uppercase()
-        val normalized = raw.replace("-", "")
 
-        val validRawFormat = raw == normalized || dashedKeychipPattern.matches(raw)
-        if (!validRawFormat || !keychipPattern.matches(normalized))
-            400 - "Invalid keychip format. Expected A followed by 14 digits (with optional dash)"
+        if (!keychipPattern.matches(raw))
+            400 - "Invalid keychip format. Expected 15 or 11 characters (with optional dash)"
 
-        return normalized
+        return raw.replace("-", "")
     }
 
     @API("/keychip")

@@ -185,7 +185,8 @@ class AllNet(
         // If keychip authentication is enabled, the game URLs will be set to /gs/{token}/{game}/...
         val base = if (session != null) "gs/$session" else "g"
 
-        return "http://$addr/$base/$gameId/$ver/"
+        val url = "http://$addr/$base/$gameId/$ver"
+        return url + (if (gameId == "SDFE") "" else "/")  // Wacca must not end with trailing slash
     }
 
     companion object {

@@ -79,9 +79,9 @@ class WaccaServer {
 
     /** Handle all requests */
     @API("/api/**")
-    fun handle(req: HttpServletRequest, @RB body: String): Any {
+    fun handle(req: HttpServletRequest, @RB body: String, @PV version: String): Any {
         // Normalize path
-        val path = req.requestURI.removePrefix("/g/wacca").removePrefix("/WaccaServlet")
+        val path = req.requestURI.removePrefix("/g/SDFE/${version}").removePrefix("/WaccaServlet")
             .removePrefix("/api").removePrefix("/").lowercase()
 
         if (path !in cacheMap && path !in handlerMap) {

@@ -70,8 +70,8 @@ class ChusanController(
             data["c3exp"] = true
         }
 
-        val apiFriendlyName = if (endpoint.lowercase() == endpoint && endpoint.length == 32)
-            hashes.filter { it.value.contains(api) }.keys.first().str + " (encrypt)" else api
+        val apiFriendlyName = if (api.lowercase() == api && api.length == 32)
+            ((hashes.filter { it.value.contains(api) }.keys.firstOrNull()?.str ?: api) + " (encrypt)") else api
 
         if (api.startsWith("CM") && api !in handlers) api = api.removePrefix("CM")
         val token = TokenChecker.tokenShort()

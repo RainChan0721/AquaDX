@@ -55,7 +55,7 @@ class OngekiController(
         val token = TokenChecker.tokenShort()
 
         val apiFriendlyName = if (api.lowercase() == api && api.length == 32)
-            ((hashes.filter { it.value.contains(api) }.keys.firstOrNull()?.str + " (encrypt)") ?: api) else "$api (encrypt)"
+            ((hashes.filter { it.value.contains(api) }.keys.firstOrNull()?.str ?: api) + " (encrypt)") else api
         log.info("$token : $apiFriendlyName < ${data.toJson()}")
 
         val noop = """{"returnCode":1,"apiName":"${api.substringBefore("Api").firstCharLower()}"}"""

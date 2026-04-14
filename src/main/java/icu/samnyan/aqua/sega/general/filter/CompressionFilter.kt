@@ -124,5 +124,5 @@ class CompressionFilter(
 
     /** Only games (other than WACCA) require response compression */
     override fun shouldNotFilter(req: HttpServletRequest) =
-        !(req.servletPath.startsWith("/g/") && !req.servletPath.startsWith("/g/wacca"))
+        !(req.servletPath.startsWith("/g/") && !req.servletPath.startsWith("/g/SDFE"))
 }

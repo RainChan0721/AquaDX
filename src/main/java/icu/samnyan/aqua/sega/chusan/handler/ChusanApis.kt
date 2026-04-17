@@ -353,7 +353,7 @@ fun ChusanController.chusanInit() {
         mapOf(
             "gameSetting" to mapOf(
                 "romVersion" to "$version.00",
-                "dataVersion" to (versionHelper.get(data["clientId"].toString()) ?: "$version.01"),
+                "dataVersion" to (versionHelper.get(data["clientId"].toString()) ?: "$version.00"),
                 "isMaintenance" to false,
                 "requestInterval" to 0,
                 "rebootStartTime" to now.minusHours(4).format(fmt),

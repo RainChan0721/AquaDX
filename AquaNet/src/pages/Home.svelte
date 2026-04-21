@@ -63,13 +63,6 @@
 <style lang="sass">
   @use "../vars"
 
-  .tabs
-    display: flex
-    gap: 1rem
-
-    div
-      &.active
-        color: vars.$c-main
 
   h3
     font-size: 1.3rem

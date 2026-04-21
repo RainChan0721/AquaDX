@@ -4,7 +4,6 @@
   import { DISCORD_INVITE } from "../../libs/config";
 
   export let error: string;
-  export let expected: boolean = false;
 </script>
 
 <div class="overlay" transition:fade>

@@ -119,6 +119,7 @@ export const EN_REF_HOME = {
   'home.linkcard.enter-info': 'Please enter either an Access Code or a Serial Number in the following boxes. Dragging and dropping aime.txt or felica.txt is also supported.',
   'home.linkcard.access-code': 'If you have an Access Code, enter it below. Access Codes can be obtained from the back of your card or from the title screen of your game (press the Access Code button and card in). If you do not have an Access Code, you may generate one.',
   'home.linkcard.enter-sn': 'If you have a Serial Number, enter it below. Serial Numbers can be obtained via most smartphones (NFC Tools: <a href="https://play.google.com/store/apps/details?id=com.wakdev.wdnfc">Android</a> / <a href="https://apps.apple.com/us/app/nfc-tools/id1252962749">Apple</a>) or a card reader.',
+  'home.linkcard.kdx-notice': 'If you are playing KanadeDX, please enter the virtual card number here (can be found in Settings > Card Number).',
   'home.linkcard.link': 'Link',
   'home.linkcard.data-conflict': 'Data Conflict',
   'home.linkcard.name': 'Name',

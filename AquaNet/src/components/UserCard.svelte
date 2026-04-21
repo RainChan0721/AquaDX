@@ -14,7 +14,7 @@
   let error = ""
 
   setLoading(true)
-  GAME.userSummary(username, game).then(d => data = d).catch(e => error = e).finally(_ => setLoading(false))
+  GAME.userSummary(username, game).then(d => data = d).catch(e => error = e).finally(() => setLoading(false))
 </script>
 
 {#if !data}

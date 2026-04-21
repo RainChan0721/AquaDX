@@ -29,8 +29,8 @@
 
   registerChart()
 
-  export let username: string;
-  export let game: GameName;
+  export let username: string = "";
+  export let game: GameName = "" as GameName;
   let calElement: HTMLElement
   let error: string;
   let me: AquaNetUser
@@ -593,10 +593,6 @@
           overflow: hidden
           flex-direction: column
 
-          .first-line
-            display: flex
-            flex-direction: row
-
           // Limit song name to one line
           .song-title
             max-width: 90%
@@ -611,9 +607,6 @@
           @media (max-width: vars.$w-mobile)
             flex-direction: column
             gap: 0
-
-            .rank-text
-              text-align: left
 
   // Recent Scores section
   .recent

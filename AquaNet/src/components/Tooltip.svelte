@@ -27,15 +27,15 @@
     })
   })
 
-  function mouseOver(event: MouseEvent) {
+  function mouseOver(event: Event) {
     console.log('over')
     isHovered = true
-    updatePosition(event)
+    updatePosition(event as MouseEvent)
   }
 
-  function mouseMove(event: MouseEvent) {
+  function mouseMove(event: Event) {
     console.log('move')
-    updatePosition(event)
+    updatePosition(event as MouseEvent)
   }
 
   function updatePosition(event: MouseEvent) {

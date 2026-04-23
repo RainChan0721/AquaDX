@@ -9,7 +9,6 @@ import icu.samnyan.aqua.sega.chusan.model.userdata.Chu3UserItem
 import icu.samnyan.aqua.sega.chusan.model.userdata.UserMusicDetail
 import icu.samnyan.aqua.sega.general.model.CardStatus
 import icu.samnyan.aqua.sega.general.model.UserRecentRating
-import org.springframework.data.repository.findByIdOrNull
 import java.time.format.DateTimeFormatter
 
 @Suppress("UNCHECKED_CAST")
@@ -36,7 +35,7 @@ fun ChusanController.chusanInit() {
             // Unlock Challenge
             mapOf("courseId" to 300004, "startDate" to "2019-01-01 00:00:00", "endDate" to "2077-01-01 11:45:14"),
             mapOf("courseId" to 300009, "startDate" to "2019-01-01 00:00:00", "endDate" to "2077-01-01 11:45:14"),
-        ) + (0..9).toList().map {
+        ) + (0..14).toList().map {
             // Linked Verse
             mapOf("courseId" to 500000 + (opts?.chusanLvDifficulty ?: 5) + (it * 100), "startDate" to "2019-01-01 00:00:00", "endDate" to "2077-01-01 11:45:14")
         }

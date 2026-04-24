@@ -35,7 +35,7 @@ export function registerChart() {
   )
 }
 
-const dayTemplate = (DateHelper) => {
+const dayTemplate = (DateHelper: any) => {
   const ROWS_COUNT = 7
   const ALLOWED_DOMAIN_TYPE = ['month']
 
@@ -43,7 +43,7 @@ const dayTemplate = (DateHelper) => {
     name: 'ghDayFix',
     allowedDomainType: ALLOWED_DOMAIN_TYPE,
     rowsCount: () => ROWS_COUNT,
-    columnsCount: (ts) => {
+    columnsCount: (ts: any) => {
       let count = DateHelper.getWeeksCountInMonth(ts)
       const endOfMonth = moment().endOf('month').toDate()
       const clampEnd = DateHelper.getFirstWeekOfMonth(endOfMonth).toDate()
@@ -53,7 +53,7 @@ const dayTemplate = (DateHelper) => {
       }
       return count
     },
-    mapping: (startTimestamp, endTimestamp) => {
+    mapping: (startTimestamp: any, endTimestamp: any) => {
       const clampStart = DateHelper.getFirstWeekOfMonth(startTimestamp)
       let clampEnd = DateHelper.getFirstWeekOfMonth(endTimestamp)
 
@@ -64,7 +64,7 @@ const dayTemplate = (DateHelper) => {
       let x = -1
       const pivotDay = clampStart.weekday()
 
-      return DateHelper.intervals('day', clampStart, clampEnd).map((ts) => {
+      return DateHelper.intervals('day', clampStart, clampEnd).map((ts: any) => {
         const weekday = DateHelper.date(ts).weekday()
         if (weekday === pivotDay) {
           x += 1
@@ -77,7 +77,7 @@ const dayTemplate = (DateHelper) => {
         }
       })
     },
-    extractUnit: (ts) => DateHelper.date(ts).startOf('day').valueOf(),
+    extractUnit: (ts: any) => DateHelper.date(ts).startOf('day').valueOf(),
   }
 }
 

@@ -95,7 +95,9 @@
     bind:tested={srcTested} bind:this={srcEl} bind:exportedData={srcExportedData} />
 
   <div class="arrow" class:disabled={!(srcTested && dstTested)}>
-    <img src="{DATA_HOST}/d/DownArrow.png" alt="arrow" on:click={startTransfer}>
+    <button class="arrow-btn" on:click={startTransfer}>
+      <img src="{DATA_HOST}/d/DownArrow.png" alt="arrow">
+    </button>
   </div>
 
   <TransferServer bind:src={dst} bind:gameInfo={gameInfo} on:change={onChange}
@@ -114,6 +116,15 @@
 
     &.disabled
       filter: grayscale(1)
+
+    .arrow-btn
+      background: none
+      border: none
+      padding: 0
+      cursor: pointer
+
+      &:disabled
+        cursor: not-allowed
 
     // CSS animation to let the image opacity breathe
     img

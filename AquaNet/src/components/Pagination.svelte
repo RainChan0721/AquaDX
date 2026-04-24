@@ -9,6 +9,10 @@
   let editing = false
   let inputPage: number
 
+  function focus(node: HTMLInputElement) {
+    node.focus()
+  }
+
   function updatePage(newPage: number) {
     if (newPage > 0 && newPage <= totalPages) dispatch('updatePage', newPage)
   }
@@ -33,7 +37,7 @@
   <button on:click={() => updatePage(page - 1)} disabled={page <= 1}>Previous</button>
 
   {#if editing}
-    <input bind:value={inputPage} on:blur={finishEditing} on:keydown={handleKeydown} min="1" max={totalPages} autofocus/>
+    <input bind:value={inputPage} on:blur={finishEditing} on:keydown={handleKeydown} min="1" max={totalPages} use:focus/>
   {:else}
     <span on:click={startEditing} role="button" tabindex="0" on:keydown={(e) => e.key === 'Enter' && startEditing()}>
       Page {page} of {totalPages}

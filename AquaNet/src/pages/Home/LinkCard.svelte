@@ -49,12 +49,12 @@
       if (linkingType === 'AC') inputAC = ""
       if (linkingType === 'SN') inputSN = ""
     } catch (e) {
-      setError(e.message, linkingType)
+      setError((e as any).message, linkingType!)
     }
     state = "ready"
   }
 
-  let linkingType: 'AC' | 'SN' = null
+  let linkingType: 'AC' | 'SN' | null = null
   async function link(type: 'AC' | 'SN') {
     if (state !== 'ready' || accountCardSummary === null) return
     state = "linking-" + type
@@ -192,7 +192,7 @@
 
   function inputACChange() {
     // Add spaces to the input
-    const cursorIndex = cursorPositionToCursorIndex(inputAC, elemInputAC.selectionStart, /\d/)
+    const cursorIndex = cursorPositionToCursorIndex(inputAC, elemInputAC.selectionStart ?? 0, /\d/)
     inputAC = inputAC.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').replace(/ $/, '')
     const cursorPosition = cursorIndexToCursorPosition(inputAC, cursorIndex, /\d/)
     setTimeout(() => elemInputAC.selectionStart = elemInputAC.selectionEnd = cursorPosition, 0)
@@ -212,7 +212,7 @@
   function inputSNChange() {
     // Add colons to the input
     inputSN = inputSN.toUpperCase()
-    const cursorIndex = cursorPositionToCursorIndex(inputSN, inputElemSN.selectionStart, /[0-9A-F]/)
+    const cursorIndex = cursorPositionToCursorIndex(inputSN, inputElemSN.selectionStart ?? 0, /[0-9A-F]/)
     inputSN = inputSN.replace(/[^0-9A-F]/g, '').replace(/(.{2})/g, '$1:').replace(/:$/, '')
     const cursorPosition = cursorIndexToCursorPosition(inputSN, cursorIndex, /[0-9A-F]/)
     setTimeout(() => inputElemSN.selectionStart = inputElemSN.selectionEnd = cursorPosition, 0)

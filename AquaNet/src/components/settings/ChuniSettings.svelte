@@ -179,7 +179,7 @@
     try {
       data = await GAME.export('chu3')
     }
-    catch (e) {
+    catch (e: any) {
       error = e.message
       submitting = ""
       return
@@ -481,7 +481,7 @@
       <span>{USERBOX_SETUP_MODE ? t('userbox.new.url_warning') : USERBOX_SETUP_TEXT}</span>
       <div class="actions">
         {#if USERBOX_SETUP_MODE}
-          <input type="text" on:keyup={e => {if (e.key == "Enter") { userboxHandleInput((e.target as HTMLInputElement).value) } else g(e.currentTarget.value)}} class="add-margin" placeholder="Base URL">
+          <input type="text" on:keyup={e => {if (e.key == "Enter") { userboxHandleInput((e.target as HTMLInputElement).value) }}} class="add-margin" placeholder="Base URL">
         {:else}
           {#if USERBOX_PROGRESS != 0}
             <div class="progress">
@@ -558,36 +558,6 @@ p.notice
     height: 100%
     opacity: 0
 
-.preview
-  margin-top: 32px
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-between
-  gap: 32px
-
-  > div
-    position: relative
-    width: 100px
-    height: 100px
-    overflow: hidden
-    background: vars.$ov-lighter
-    border-radius: vars.$border-radius
-
-    span
-      position: absolute
-      bottom: 0
-      width: 100%
-      text-align: center
-      z-index: 10
-      background: rgba(0, 0, 0, 0.2)
-      backdrop-filter: blur(2px)
-
-    img
-      position: absolute
-      inset: 0
-      width: 100%
-      height: 100%
-      object-fit: contain
 
 .fields
   display: flex

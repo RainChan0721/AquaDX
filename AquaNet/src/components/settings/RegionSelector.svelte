@@ -3,8 +3,8 @@
   import { ts } from "../../libs/i18n";
   import StatusOverlays from "../StatusOverlays.svelte";
   let regionId = $state(0);
-  let submitting = ""
-  let error: string;
+  let submitting = $state("")
+  let error: string = $state("");
 
   const prefectures = ["None","Aichi","Aomori","Akita","Ishikawa","Ibaraki","Iwate","Ehime","Oita","Osaka","Okayama","Okinawa","Kagawa","Kagoshima","Kanagawa","Gifu","Kyoto","Kumamoto","Gunma","Kochi","Saitama","Saga","Shiga","Shizuoka","Shimane","Chiba","Tokyo","Tokushima","Tochigi","Tottori","Toyama","Nagasaki","Nagano","Nara","Niigata","Hyogo","Hiroshima","Fukui","Fukuoka","Fukushima","Hokkaido","Mie","Miyagi","Miyazaki","Yamagata","Yamaguchi","Yamanashi","Wakayama"]
 
@@ -31,7 +31,7 @@
     <span class="name">{ts(`settings.regionSelector.title`)}</span>
     <span class="desc">{ts(`settings.regionSelector.desc`)}</span>
   </label>
-  <select bind:value={regionId} on:change={saveNewRegion}>
+  <select bind:value={regionId} onchange={saveNewRegion}>
     <option value={0} disabled selected>{ts("settings.regionSelector.select")}</option>
     {#each prefectures.slice(1) as prefecture, index}
       <option value={index}>{prefecture}</option>

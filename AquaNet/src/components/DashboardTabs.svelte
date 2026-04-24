@@ -27,7 +27,7 @@
     display: flex
     gap: 1rem
 
-    div
+    a
       &.active
         color: vars.$c-main
 </style>

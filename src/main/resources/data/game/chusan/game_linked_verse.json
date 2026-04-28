@@ -6,5 +6,6 @@
 	{"id": 10005, "name": "Linked GATE CRYSTAL", "musicId": 2880},
 	{"id": 10006, "name": "Linked GATE PARADISE", "musicId": 2891},
 	{"id": 10007, "name": "Linked GATE NEW", "musicId": 2919},
-	{"id": 10008, "name": "Linked GATE SUN", "musicId": 2938}
+	{"id": 10008, "name": "Linked GATE SUN", "musicId": 2938},
+	{"id": 10009, "name": "Linked GATE LUMINOUS", "musicId": 2954}
 ]

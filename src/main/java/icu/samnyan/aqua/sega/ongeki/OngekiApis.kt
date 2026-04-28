@@ -72,14 +72,14 @@ fun OngekiController.ongekiInit() {
     }
 
     // NOTE: no-op APIs moved to respect encryption
-    "ExtendLockTime" static { """{returnCode":1, "apiName":"ExtendLockTimeApi"}""" }
-    "GameLogout" static { """{returnCode":1, "apiName":"GameLogoutApi"}""" }
-    "RegisterPromotionCard" static { """{returnCode":1, "apiName":"RegisterPromotionCardApi"}""" }
-    "UpsertClientBookkeeping" static { """{returnCode":1, "apiName":"UpsertClientBookkeepingApi"}""" }
-    "UpsertClientDevelop" static { """{returnCode":1, "apiName":"UpsertClientDevelopApi"}""" }
-    "UpsertClientError" static { """{returnCode":1, "apiName":"UpsertClientErrorApi"}""" }
-    "UpsertClientSetting" static { """{returnCode":1, "apiName":"UpsertClientSettingApi"}""" }
-    "UpsertClientTestmode" static { """{returnCode":1, "apiName":"UpsertClientTestmodeApi"}""" }
-    "UpsertUserGplog" static { """{returnCode":1, "apiName":"UpsertUserGplogApi"}""" }
-    "Ping" static { """{returnCode":1, "apiName":"Ping"}""" }
+    "ExtendLockTime" static { """{"returnCode":1, "apiName":"ExtendLockTimeApi"}""" }
+    "GameLogout" static { """{"returnCode":1, "apiName":"GameLogoutApi"}""" }
+    "RegisterPromotionCard" static { """{"returnCode":1, "apiName":"RegisterPromotionCardApi"}""" }
+    "UpsertClientBookkeeping" static { """{"returnCode":1, "apiName":"UpsertClientBookkeepingApi"}""" }
+    "UpsertClientDevelop" static { """{"returnCode":1, "apiName":"UpsertClientDevelopApi"}""" }
+    "UpsertClientError" static { """{"returnCode":1, "apiName":"UpsertClientErrorApi"}""" }
+    "UpsertClientSetting" static { """{"returnCode":1, "apiName":"UpsertClientSettingApi"}""" }
+    "UpsertClientTestmode" static { """{"returnCode":1, "apiName":"UpsertClientTestmodeApi"}""" }
+    "UpsertUserGplog" static { """{"returnCode":1, "apiName":"UpsertUserGplogApi"}""" }
+    "Ping" static { """{"returnCode":1, "apiName":"Ping"}""" }
 }

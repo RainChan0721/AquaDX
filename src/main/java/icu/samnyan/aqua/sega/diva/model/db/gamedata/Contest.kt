@@ -37,10 +37,10 @@ class Contest : Serializable {
     var goldBorders = 0
 
     // Pv List format: "pv_id_start:pv_id_end,pv_id_start:pv_id_end,pv_id_start:pv_id_end" more than 20 group will be ignore, put in -1 for empty end
-    var pvList: String = ""
+    var pvList: String? = ""
 
     // Pv difficulty list format: "pv_difficulty:min_complexity:max_complexity"
-    var pvDiffList: String = ""
+    var pvDiffList: String? = ""
 
     // ContestReward format:
     // Reward Type: (-1 None, 0 VP, 1 Skin, 2 Callsign, 3 Customize)
@@ -71,9 +71,10 @@ class Contest : Serializable {
                 this.sliverBorders,
                 this.goldBorders
             )
+            val pvl = pvList
             for (i in 1..20) {
                 // format is "pv_range_start,pv_range_end,min_complexity,max_complexity,difficulty,unknown"
-                if (pvList.isBlank() || !pvList.contains(":")) {
+                if (StringUtils.isBlank(pvl) || pvl?.contains(":") != true) {
                     list += listOf(-1, -1)
                     if (i == 1) {
                         list.add(this.minComplexity)
@@ -84,19 +85,20 @@ class Contest : Serializable {
                     }
                     list += listOf(-1, -2, "7fffffffffffffffffffffffffffffff")
                 } else {
-                    val groups = pvList.split(',').dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val groups = pvl!!.split(',').dropLastWhile { it.isEmpty() }.toTypedArray()
                     if (groups.size < i) {
                         list += listOf(-1, -1, -2, -2, -1, -2, "7fffffffffffffffffffffffffffffff")
                     } else {
                         val ids = groups[i - 1].split(':').dropLastWhile { it.isEmpty() }.toTypedArray()
                         list.add(ids[0])
                         list.add(ids[1])
-                        if (StringUtils.isBlank(pvDiffList) || !pvDiffList.contains(":")) {
+                        val pvdl = pvDiffList
+                        if (StringUtils.isBlank(pvdl) || pvdl?.contains(":") != true) {
                             list.add(this.minComplexity)
                             list.add(this.maxComplexity)
                             list.add(-1)
                         } else {
-                            val diffList = pvDiffList.split(',').dropLastWhile { it.isEmpty() }.toTypedArray()
+                            val diffList = pvdl!!.split(',').dropLastWhile { it.isEmpty() }.toTypedArray()
                             if (diffList.size < i) {
                                 list.add(this.minComplexity)
                                 list.add(this.maxComplexity)

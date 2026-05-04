@@ -77,9 +77,9 @@ class CardMakerController(
         val json = mapper.write(mapOf(
             "length" to 3,
             "gameConnectList" to listOf(
-                gameConnect(0, 1, "http://$addr:$port$base/chu3/$version/"),
-                gameConnect(1, 1, "http://$addr:$port$base/mai2/"),
-                gameConnect(2, 1, "http://$addr:$port$base/ongeki/")
+                gameConnect(0, 1, "http://$addr:$port$base/SDHD/$version/"),
+                gameConnect(1, 1, "http://$addr:$port$base/SDEZ/$version/"),
+                gameConnect(2, 1, "http://$addr:$port$base/SDDT/$version/")
             )
         ))
 

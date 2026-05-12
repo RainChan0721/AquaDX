@@ -241,13 +241,24 @@ fun Maimai2ServletController.initApis() {
     // Response: {userId, userKaleidxScopeList}
     "GetUserKaleidxScope".unpaged {
         val u = db.userData.findByCardExtId(uid) ?: (404 - "User not found")
-        val lst = db.userKaleidx.findByUser(u)
-            .mapApply { isKeyFound = true }.toMutableList()
+        val gates = db.userKaleidx.findByUser(u)
+            .associateBy { it.gateId }.toMutableMap()
 
-        lst += (1..6).filter { i -> lst.none { it.gateId == i } }
-            .map { Mai2UserKaleidx().apply { user = u; gateId = it } }
+        fun unlockGate(gateId: Int) {
+            gates.getOrPut(gateId) { Mai2UserKaleidx().apply { user = u; this.gateId = gateId } }
+                .apply {
+                    isGateFound = true
+                    isKeyFound = true
+                }
+        }
 
-        lst
+        (1..6).forEach(::unlockGate)
+        if (gates[6]?.isClear == true) unlockGate(7)
+        if (gates[7]?.isClear == true) unlockGate(8)
+        if (gates[8]?.isClear == true) unlockGate(9)
+        if (gates[9]?.isClear == true) unlockGate(10)
+
+        gates.values.sortedBy { it.gateId }
     }
     // Request: {userId, version, userData: [UserDetail], userPlaylogList: [UserPlaylog]}
     // Response: {userId, userItemList: [UserItem]}

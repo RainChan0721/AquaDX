@@ -20,6 +20,42 @@
 | 14       | Intimate Item           |
 | 15       | Kaleidx Scope Key       |
 
+## Kaleidx Scope gates
+
+Kaleidx Scope gate visibility is controlled by three server responses:
+
+* `GetGameEventApi` must return open event rows for the gate/course event IDs used by the game's static data.
+* `GetGameKaleidxScopeApi` must return a `gameKaleidxScopeList` row for each gate the user can see. Current known gate IDs are `1..6` for the original gates, `7` for Prism/Center Tower, `8` for the post-Prism boss gate, `9` for Hope Gate, and `10` for the final challenge.
+* `GetUserKaleidxScopeApi` must return a `userKaleidxScopeList` row for the same `gateId`.
+
+The client hides a gate when the user row is missing, the event is closed, or the row has `isGateFound = false`. A visible selectable gate needs at least:
+
+```json
+{
+  "gateId": 8,
+  "isGateFound": true,
+  "isKeyFound": true,
+  "isClear": false
+}
+```
+
+The unlock announcement can still appear when `isGateFound = true`, `isKeyFound = true`, and `isInfoWatched = false`; that announcement alone does not prove that the gate will be listed in the menu on the next download.
+
+For progression past Prism Tower, `UpsertUserAllApi` must persist `upsertUserAll.userKaleidxScopeList` by `(userId, gateId)`. AquaDX unlocks Prism/Center Tower gate `7` after gate `6` is clear. After gate `7` is clear, the next `GetUserKaleidxScopeApi` response must include gate `7` as clear and a gate `8` row with both found/key true. The same pattern applies for gates `9` and `10` after their preceding gates are clear.
+
+Fixed AquaDX.v1 issue: older code advertised gates `1..10` from `GetGameKaleidxScopeApi` and saved uploaded Kaleidx rows in `UpsertUserAllApi`, but `GetUserKaleidxScopeApi` only backfilled missing rows for gates `1..6`. It also forced every persisted row to `isKeyFound = true` before returning it. Existing users without usable rows for gate `7` or later could therefore receive an unlock-style message but still have no visible Prism Tower or post-Prism gate in the Kaleidx Scope menu.
+
+To confirm the failure for a user, inspect their rows:
+
+```sql
+SELECT gate_id, is_gate_found, is_key_found, is_clear, is_info_watched
+FROM maimai2_user_kaleidx
+WHERE user_id = <internal_user_id>
+ORDER BY gate_id;
+```
+
+If gate `7` is clear and gate `8` is missing, or if any target gate row has `is_gate_found = 0`, the menu will not show the next gate.
+
 ## Multiplayer
 
 ### Party Host/Client/Member

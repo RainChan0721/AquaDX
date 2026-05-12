@@ -37,7 +37,14 @@ fun ChusanController.chusanInit() {
             mapOf("courseId" to 300009, "startDate" to "2019-01-01 00:00:00", "endDate" to "2077-01-01 11:45:14"),
         ) + (0..14).toList().map {
             // Linked Verse
-            mapOf("courseId" to 500000 + (opts?.chusanLvDifficulty ?: 5) + (it * 100), "startDate" to "2019-01-01 00:00:00", "endDate" to "2077-01-01 11:45:14")
+            val difficulty = (opts?.chusanLvDifficulty ?: 5);
+            mapOf(
+                "courseId" to 500000
+                 + (if (it < 12 && difficulty == 0) 1 else difficulty)
+                 + (if (it >= 12) 1 else 0) + (it * 100),
+                "startDate" to "2019-01-01 00:00:00",
+                "endDate" to "2077-01-01 11:45:14"
+            )
         }
 
         mapOf("length" to lst.size, "gameCourseLevelList" to lst)

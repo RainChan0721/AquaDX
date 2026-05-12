@@ -16,7 +16,7 @@
   let changed: string[] = [];
   let symbols: Record<number, number> = {};
   let allItems: Record<string, Record<string, { name: string }>> = {}
-  let submitting: string | undefined | null;  
+  let submitting: string | undefined | null;
   let settings: Record<string, GameOption> = {};
 
   let existingUrl = "";
@@ -101,12 +101,13 @@
   {#if linkedVerseAvailable}
     <GameSettingFields game="chu3-linked-verse" />
     {#if settings["chusanLvDifficulty"]}
+      <a target="_blank" href="https://silentblue.remywiki.com/CHUNITHM:Linked_VERSE">{t(`userbox.lv.help`)}</a>
       <div class="field">
         <label for={`chusanLvDifficulty`}>{ts(`userbox.lv.difficulty`)}</label>
         <div>
           <select bind:value={settings["chusanLvDifficulty"].value} id={`chusanLvDifficulty`} on:change={() => {changed = [...changed, `chusanLvDifficulty`];}}>
-            {#each {length: 5}, i}
-              <option value={i + 1}>{t(`userbox.lv.difficulty.${i + 1}` as keyof typeof EN_REF)}</option>
+            {#each {length: 6}, i}
+              <option value={i}>{t(`userbox.lv.difficulty.${i}` as keyof typeof EN_REF)}</option>
             {/each}
           </select>
           {#if changed.includes(`chusanLvDifficulty`)}

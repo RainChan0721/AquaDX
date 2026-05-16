@@ -17,6 +17,8 @@ import icu.samnyan.aqua.sega.maimai2.model.userdata.Mai2UserOption
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
+import java.security.MessageDigest
+import kotlin.text.Charsets.UTF_8
 import kotlin.jvm.optionals.getOrNull
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
@@ -207,7 +209,11 @@ class Maimai2(
     }
 
     val photoDir = UploadUserPhotoHandler.uploadDir.toFile().canonicalFile
+    val photoHashMap: MutableMap<String, String> = emptyMap<String, String>().toMutableMap()
 
+    // creating a ton of MD5 hashes every launch *probably* isn't ideal but it's better than exposing token AND extid...
+
+    @OptIn(ExperimentalStdlibApi::class)
     @API("my-photo")
     suspend fun myPhoto(@RP token: Str) = us.jwt.auth(token) { u ->
         val find = "${u.ghostCard.extId}-"
@@ -215,15 +221,21 @@ class Maimai2(
             ?.map { it.name }
             ?.filter { it.startsWith(find) }
             ?.sorted()
+            ?.map {
+                // generate MD5 hash of photo as to not expose details
+                if (!photoHashMap.containsKey(it))
+                    photoHashMap[it] = MessageDigest.getInstance("MD5")
+                        .digest(it.toByteArray(UTF_8)).toHexString()
+                photoHashMap[it]
+            }
             ?: emptyList()
     }
 
     @API("my-photo/{fileName}", produces = [MediaType.IMAGE_JPEG_VALUE])
-    suspend fun myPhoto(@RP token: Str, @PV fileName: Str) = us.jwt.auth(token) { u ->
-        val f = (photoDir / fileName)
-        if (!f.canonicalFile.startsWith(photoDir)) (403 - "Never gonna give you up")
-        if (!f.name.startsWith("${u.ghostCard.extId}-")) (403 - "Not your photo")
-        if (!f.exists()) (404 - "Photo not found")
-        f.readBytes()
+    suspend fun accessMyPhoto(@PV fileName: Str): ByteArray {
+        val trueFileName = photoHashMap.entries.firstOrNull { it.value == fileName }?.key
+        if (trueFileName.isNullOrEmpty()) 404 - "Photo does not exist"
+        val file = (photoDir / trueFileName)
+        return file.readBytes()
     }
 }

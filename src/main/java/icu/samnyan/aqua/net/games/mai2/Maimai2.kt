@@ -211,7 +211,7 @@ class Maimai2(
     val photoDir = UploadUserPhotoHandler.uploadDir.toFile().canonicalFile
     val photoHashMap: MutableMap<String, String> = emptyMap<String, String>().toMutableMap()
 
-    // creating a ton of MD5 hashes every launch *probably* isn't ideal but it's better than exposing token AND extid...
+    // creating a ton of SHA256 hashes every launch *probably* isn't ideal but it's better than exposing token AND extid...
 
     @OptIn(ExperimentalStdlibApi::class)
     @API("my-photo")
@@ -222,9 +222,9 @@ class Maimai2(
             ?.filter { it.startsWith(find) }
             ?.sorted()
             ?.map {
-                // generate MD5 hash of photo as to not expose details
+                // generate hash of photo filename as to not expose details
                 if (!photoHashMap.containsKey(it))
-                    photoHashMap[it] = MessageDigest.getInstance("MD5")
+                    photoHashMap[it] = MessageDigest.getInstance("SHA-256")
                         .digest(it.toByteArray(UTF_8)).toHexString()
                 photoHashMap[it]
             }

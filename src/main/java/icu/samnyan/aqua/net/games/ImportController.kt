@@ -107,52 +107,57 @@ abstract class ImportController<ExportModel: IExportClass<UserModel>, UserModel:
     @Suppress("UNCHECKED_CAST")
     @API("import")
     fun importUserData(@RP token: Str, @RB json: Str) = us.jwt.auth(token) { u ->
-        val export = json.parseJackson(exportClass.java)
-        if (!export.gameId.equals(game, true)) 400 - "Invalid game ID"
+        try {
+            val export = json.parseJackson(exportClass.java)
+            if (!export.gameId.equals(game, true)) 400 - "Invalid game ID"
 
-        val lists = listRepos.toList().associate { (f, r) -> r to f.get(export) as List<IUserEntity<UserModel>> }.vNotNull()
-        val singles = singleRepos.toList().associate { (f, r) -> r to f.get(export) as IUserEntity<UserModel> }.vNotNull()
-        var repoFieldMap = exportRepos.toList().associate { (f, r) -> r to f }
+            val lists = listRepos.toList().associate { (f, r) -> r to f.get(export) as List<IUserEntity<UserModel>> }.vNotNull()
+            val singles = singleRepos.toList().associate { (f, r) -> r to f.get(export) as IUserEntity<UserModel> }.vNotNull()
+            var repoFieldMap = exportRepos.toList().associate { (f, r) -> r to f }
 
-        // Validate new user data
-        // Check that all ids are 0 (this should be true since all ids are @JsonIgnore)
-        if (export.userData.id != 0L) 400 - "User ID must be 0"
-        lists.values.flatten().forEach { if (it.id != 0L) 400 - "ID must be 0" }
-        singles.values.forEach { if (it.id != 0L) 400 - "ID must be 0" }
+            // Validate new user data
+            // Check that all ids are 0 (this should be true since all ids are @JsonIgnore)
+            if (export.userData.id != 0L) 400 - "User ID must be 0"
+            lists.values.flatten().forEach { if (it.id != 0L) 400 - "ID must be 0" }
+            singles.values.forEach { if (it.id != 0L) 400 - "ID must be 0" }
 
-        // Set user card
-        export.userData.card = u.ghostCard
+            // Set user card
+            export.userData.card = u.ghostCard
 
-        // Check existing data
-        userDataRepo.findByCard(u.ghostCard)?.also { gu ->
-            // Store a backup of the old data
-            val fl = "${game}-backup-${u.auId}-${LocalDateTime.now().urlSafeStr()}.json"
-            (Path(netProps.importBackupPath) / fl).writeText(export(u).toJson())
+            // Check existing data
+            userDataRepo.findByCard(u.ghostCard)?.also { gu ->
+                // Store a backup of the old data
+                val fl = "${game}-backup-${u.auId}-${LocalDateTime.now().urlSafeStr()}.json"
+                (Path(netProps.importBackupPath) / fl).writeText(export(u).toJson())
 
-            // Delete the old data (After migration v1000.7, all user-linked entities have ON DELETE CASCADE)
-            log.info("$game Import: Deleting old data for user ${u.auId}")
-            userDataRepo.delete(gu)
-            userDataRepo.flush()
-        }
-
-        trans.execute {
-            // Insert new data
-            val nu = userDataRepo.save(export.userData)
-            // Set user fields
-            lists.values.flatten().forEach { it.user = nu }
-            singles.values.forEach { it.user = nu }
-            // Save new data
-            singles.forEach { (repo, single) -> (repo as IUserRepo<UserModel, Any>).save(single) }
-            lists.forEach { (repo, list) -> (repo as IUserRepo<UserModel, Any>).saveAll(list) }
-            // Handle custom importers
-            customImporters.forEach { (field, importer) ->
-                importer(export, nu)
+                // Delete the old data (After migration v1000.7, all user-linked entities have ON DELETE CASCADE)
+                log.info("$game Import: Deleting old data for user ${u.auId}")
+                userDataRepo.delete(gu)
+                userDataRepo.flush()
             }
+
+            trans.execute {
+                // Insert new data
+                val nu = userDataRepo.save(export.userData)
+                // Set user fields
+                lists.values.flatten().forEach { it.user = nu }
+                singles.values.forEach { it.user = nu }
+                // Save new data
+                singles.forEach { (repo, single) -> (repo as IUserRepo<UserModel, Any>).save(single) }
+                lists.forEach { (repo, list) -> (repo as IUserRepo<UserModel, Any>).saveAll(list) }
+                // Handle custom importers
+                customImporters.forEach { (field, importer) ->
+                    importer(export, nu)
+                }
+            }
+
+            cardService.updateCardTimestamp(u.ghostCard, gameName, resetCreatedAt = true)
+
+            SUCCESS
+        } catch(e: Exception) {
+            log.error(e.message, e)
+            500 - "Failed to import user data. More information can be found in the server logs (or contact an administrator for help if you do not have access)."
         }
-
-        cardService.updateCardTimestamp(u.ghostCard, gameName, resetCreatedAt = true)
-
-        SUCCESS
     }
 
     /**

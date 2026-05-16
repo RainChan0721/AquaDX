@@ -23,10 +23,9 @@ class FlexibleDateTimeDeserializer : JsonDeserializer<LocalDateTime?>() {
     public override fun deserialize(p: JsonParser, ctxt: DeserializationContext?): LocalDateTime {
         return LocalDateTime.parse(p.getText(), FORMATTER)
     }
-
     companion object {
-        // Card Maker needs the date ending with ".0" and chunithm sends the dates without it so we need a flexible parser
-        private val FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss[.S]")
+        // Chusan imports previous would fail because the pattern was too strict. Now the incorrect pattern should at least get accepted correctly
+        private val FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd[' ']['T']HH:mm:ss[.S][.SS][.SSS]")
     }
 }
 

@@ -34,12 +34,19 @@
   let me: AquaNetUser
   let playedMai = false
 
+  let recentGame: string = "mai2";
+
   if (USER.isLoggedIn())
   {
     USER.me().then(m => {
       me = m
       CARD.userGames(me.username).then(game => {
         playedMai = !!game.mai2
+        recentGame = Object.keys(game)
+          .filter(k => !!game[k])
+          .sort((a, b) => {
+            return (new Date(game[b].lastLogin)) - (new Date(game[a].lastLogin))
+          })[0] ?? "mai2"
       })
     }).catch(e => console.error(e))
   }
@@ -61,7 +68,8 @@
   <a href="/home">{t('navigation.home').toLowerCase()}</a>
   <!-- <div on:click={() => alert("Coming soon™")} on:keydown={e => e.key === "Enter" && alert("Coming soon™")}
        role="button" tabindex="0">{t('navigation.maps').toLowerCase()}</div> -->
-  <a href="/ranking">{t('navigation.rankings').toLowerCase()}</a>
+  <!-- kill me -->
+  <a href={`/ranking/${recentGame}`}>{t('navigation.rankings').toLowerCase()}</a>
   {#if playedMai}
     <a href="/pictures">photo</a>
   {/if}

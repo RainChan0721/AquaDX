@@ -8798,5 +8798,90 @@
         "id": 900002,
         "type": 3,
         "enable": 1
+    },
+    {
+        "id": 18700,
+        "type": 3,
+        "enable": 1
+    },
+    {
+        "id": 18701,
+        "type": 4,
+        "enable": 1
+    },
+    {
+        "id": 18702,
+        "type": 5,
+        "enable": 1
+    },
+    {
+        "id": 18703,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 18704,
+        "type": 2,
+        "enable": 1
+    },
+    {
+        "id": 18705,
+        "type": 8,
+        "enable": 1
+    },
+    {
+        "id": 18706,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 18707,
+        "type": 3,
+        "enable": 1
+    },
+    {
+        "id": 18708,
+        "type": 3,
+        "enable": 1
+    },
+    {
+        "id": 18709,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 18710,
+        "type": 2,
+        "enable": 1
+    },
+    {
+        "id": 18711,
+        "type": 8,
+        "enable": 1
+    },
+    {
+        "id": 18712,
+        "type": 7,
+        "enable": 1
+    },
+    {
+        "id": 18713,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 18714,
+        "type": 14,
+        "enable": 1
+    },
+    {
+        "id": 18715,
+        "type": 11,
+        "enable": 1
+    },
+    {
+        "id": 18716,
+        "type": 12,
+        "enable": 1
     }
 ]

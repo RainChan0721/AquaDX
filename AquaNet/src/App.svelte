@@ -9,7 +9,8 @@
   import Settings from "./pages/User/Settings.svelte";
   import MaiPhoto from "./pages/MaiPhoto.svelte";
   import { pfp, tooltip } from "./libs/ui"
-  import { ANNOUNCEMENT } from "./libs/config";
+  import { ANNOUNCEMENT } from "./libs/announcement";
+  import { DEFAULT_GAME } from "./libs/config"
   import { t } from "./libs/i18n";
   import Transfer from "./pages/Transfer/Transfer.svelte";
   import { link } from "d3";
@@ -34,7 +35,7 @@
   let me: AquaNetUser
   let playedMai = false
 
-  let recentGame: string = "mai2";
+  let recentGame: string = DEFAULT_GAME;
 
   if (USER.isLoggedIn())
   {
@@ -60,9 +61,9 @@
       <span>AquaNet</span>
     </a>
   {/if}
-  {#if ANNOUNCEMENT}
+  {#if $ANNOUNCEMENT}
     <div class="announcement">
-      <strong>{t('navigation.notice')}</strong>: {ANNOUNCEMENT}
+      <strong>{t('navigation.notice')}</strong>: {$ANNOUNCEMENT}
     </div>
   {/if}
   <a href="/home">{t('navigation.home').toLowerCase()}</a>

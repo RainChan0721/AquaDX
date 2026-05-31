@@ -37,7 +37,7 @@ class CompressionFilter(
     }
 
     fun truncateVersion(version: Number): Number {
-        return floor(version.toFloat() / 5.0) * 5;
+        return (floor(version.toFloat() / 5.0) * 5).toInt();
     }
 
     var keys = gameData.chu3GameEncryption + gameData.mai2GameEncryption + gameData.ogkGameEncryption

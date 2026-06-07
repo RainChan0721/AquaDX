@@ -69,5 +69,5 @@ data class OngekiDataExport(
     var userRegions: List<UserRegions>,
     var userGacha: List<UserGacha>,
 ): IExportClass<UserData> {
-    constructor() : this("SDDT", UserData(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList())
+    constructor() : this("SDDT", UserData(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), UserOption(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(),ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList())
 }

@@ -18,7 +18,7 @@ const val WACCA_USERNAME_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
 fun usernameCheck(isWacca: Bool): (IUserData, String) -> Unit = { u, v ->
     if (v.isBlank()) { 400 - "Username cannot be blank" }
     if (v.length > 8) { 400 - "Username too long" }
-    u.userName = toFullWidth(v)
+    u.userName = if (!isWacca) toFullWidth(v) else v
 //    v.find { it !in chars }?.let { 400 - "Invalid character '$it' in username" }
 }
 

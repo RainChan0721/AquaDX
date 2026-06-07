@@ -26,7 +26,10 @@ class OngekiImport(
         .filter { f -> f.name !in setOf("gameId", "userData") }
         .associateWith { OngekiUserRepos::class.declaredMembers
             .filter { f -> f returns OngekiUserLinked::class }
-            .firstOrNull { f -> f.name == it.name || f.name == it.name.replace("List", "") }
+            .firstOrNull { f -> f.name == it.name
+                || f.name == (it.name.substring(4, 5).lowercase() + it.name.substring(5)) // strip user
+                || f.name == it.name.replace("List", "")
+            }
             ?.call(repos) as OngekiUserLinked<*>? ?: error("No matching field found for ${it.name}")
         },
     artemisRenames = mapOf() // TODO (almost nobody uses this so it's very low priority)
@@ -57,7 +60,7 @@ data class OngekiDataExport(
     var userMusicItem: List<UserMusicItem>,
     var userOption: UserOption,
     var userPlaylog: List<UserPlaylog>,
-    var userRivalData: List<UserRival>,
+    var userRival: List<UserRival>,
     var userScenario: List<UserScenario>,
     var userStory: List<UserStory>,
     var userTechCount: List<UserTechCount>,

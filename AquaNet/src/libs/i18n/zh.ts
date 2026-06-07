@@ -258,7 +258,6 @@ const zhSettings: typeof EN_REF_SETTINGS = {
   'settings.fields.optOutOfLeaderboard.desc': '登录之后还是可以在排行榜上看到自己',
   'settings.fields.enableMusicRank.name': '在你的机台上启用「推荐乐曲排行榜」',
   'settings.fields.enableMusicRank.desc': '如果你自己设计了排行榜的话,可以关闭这个（会影响你自己的机器）。',
-  'settings.mai2.name': '玩家名字',
   'settings.profile.picture': '头像',
   'settings.profile.upload-new': '上传',
   'settings.profile.bad-format': '无效的图片格式,支持的格式有 PNG、JPG、JPEG、WEBP 和 GIF。',

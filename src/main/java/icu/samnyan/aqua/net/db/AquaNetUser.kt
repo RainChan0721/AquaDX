@@ -63,6 +63,7 @@ class AquaNetUser(
     var profileBio: String? = "",
     var profilePicture: String? = "",
     var optOutOfLeaderboard: Boolean = false,
+    var hideCountry: Boolean = false,
 
     // Email confirmation
     var emailConfirmed: Boolean = false,
@@ -97,7 +98,7 @@ class AquaNetUser(
     val publicFields get() = mapOf(
         "username" to username,
         "displayName" to displayName,
-        "country" to country,
+        "country" to if (hideCountry) "" else country,
         "regTime" to regTime,
         "profileLocation" to profileLocation,
         "profileBio" to profileBio,
@@ -264,4 +265,5 @@ class AquaUserServices(
     }
 
     fun checkOptOutOfLeaderboard(optOutOfLeaderboard: Str) = optOutOfLeaderboard.toBoolean()
+    fun checkHideCountry(hideCountry: Str) = hideCountry.toBoolean()
 }

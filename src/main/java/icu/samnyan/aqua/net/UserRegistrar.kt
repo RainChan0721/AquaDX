@@ -325,5 +325,5 @@ class UserRegistrar(
         }
 
         SUCCESS
-        }
+    }
 }

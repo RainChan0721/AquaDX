@@ -201,7 +201,7 @@
               <!-- display modern (refresh) and legacy rating -->
               <div class="rating">
                 <span>{t("UserHome.ModernRating")}</span>
-                <span>{ongekiData.playerRating.toLocaleString()}</span>
+                <span>{(ongekiData.playerRating / 1000).toFixed(3)}</span>
               </div>
               <div class="rating">
                 <span>{t("UserHome.LegacyRating")}</span>

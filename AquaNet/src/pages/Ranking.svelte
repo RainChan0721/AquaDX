@@ -78,7 +78,7 @@
           {#if game == 'ongeki'}
             {#if user.modernRating > 0}
               <span class="rating modern-rating">{
-                user.modernRating.toLocaleString()
+                (user.modernRating / 1000).toFixed(3)
               }</span>
             {/if}
             <span class="rating legacy-rating">{

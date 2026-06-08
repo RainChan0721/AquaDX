@@ -51,8 +51,10 @@ class Ongeki(
             genericUserSummary(card, mapOf(
                 "best50" to (extra["new_rating_base_best"] ?: ""),
                 "new10" to (extra["new_rating_base_new_best"] ?: ""),
-                "best25_candidates" to (extra["new_rating_base_next_best"] ?: ""),
-                "pscore" to (extra["new_rating_base_pscore"] ?: "")
+                "pscore50" to (extra["new_rating_base_pscore"] ?: ""),
+                "best20_candidates" to (extra["new_rating_base_next_best"] ?: ""),
+                "new10_candidates" to (extra["new_rating_base_new_next_best"] ?: ""),
+                "pscore20_candidates" to (extra["new_rating_base_next_pscore"] ?: "")
             ))
         else
             genericUserSummary(card, mapOf(

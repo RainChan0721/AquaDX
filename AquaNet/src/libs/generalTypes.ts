@@ -32,6 +32,8 @@ export interface AquaNetUser {
   password: string,
   optOutOfLeaderboard: boolean,
   canModifyKeychips: boolean,
+  hideCountry: boolean,
+  displayCandidates: boolean
 }
 
 export interface CardSummaryGame {

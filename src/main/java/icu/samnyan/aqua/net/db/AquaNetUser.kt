@@ -64,6 +64,7 @@ class AquaNetUser(
     var profilePicture: String? = "",
     var optOutOfLeaderboard: Boolean = false,
     var hideCountry: Boolean = false,
+    var displayCandidates: Boolean = false,
 
     // Email confirmation
     var emailConfirmed: Boolean = false,
@@ -266,4 +267,5 @@ class AquaUserServices(
 
     fun checkOptOutOfLeaderboard(optOutOfLeaderboard: Str) = optOutOfLeaderboard.toBoolean()
     fun checkHideCountry(hideCountry: Str) = hideCountry.toBoolean()
+    fun checkDisplayCandidates(displayCandidates: Str) = displayCandidates.toBoolean()
 }

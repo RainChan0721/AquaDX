@@ -65,6 +65,7 @@
 
   const getGameByCode = (code: string) => {
     switch (code?.toUpperCase()) {
+      case 'SDGA':
       case 'SDEZ':
         return 'mai2';
       case 'SDHD':

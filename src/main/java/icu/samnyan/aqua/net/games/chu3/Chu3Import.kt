@@ -65,7 +65,7 @@ data class Chu3DataExport(
     var userMusicDetailList: List<UserMusicDetail>,
     var userPlaylogList: List<UserPlaylog>,
     var userGeneralDataList: List<UserGeneralData>,
-    var userMiscDataList: Chu3UserMisc
+    var userMiscList: Chu3UserMisc
 ): IExportClass<Chu3UserData> {
     constructor() : this("SDHD",
         Chu3UserData(), UserGameOption(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), Chu3UserMisc())

@@ -9,7 +9,6 @@ import icu.samnyan.aqua.net.games.ImportController
 import icu.samnyan.aqua.sega.chusan.model.Chu3Repos
 import icu.samnyan.aqua.sega.chusan.model.Chu3UserLinked
 import icu.samnyan.aqua.sega.chusan.model.userdata.*
-import icu.samnyan.aqua.sega.ongeki.model.UserGeneralData
 import org.springframework.web.bind.annotation.RestController
 import kotlin.reflect.full.declaredMembers
 

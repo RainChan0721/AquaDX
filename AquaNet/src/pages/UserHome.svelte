@@ -24,6 +24,7 @@
   import useLocalStorage from "../libs/hooks/useLocalStorage.svelte";
   import Line from "../components/chart/Line.svelte";
   import ChuniUserboxDisplay from "../components/settings/userbox/ChuniUserboxDisplay.svelte";
+  import type { OngekiRefreshData } from "../libs/ongekiTypes";
 
   const TREND_DAYS = 60
 
@@ -51,6 +52,8 @@
   let isLoading = false
   let showMoreRecent = false
 
+  let ongekiData: OngekiRefreshData
+
   function init() {
     USER.isLoggedIn() && USER.me().then(u => me = u)
 
@@ -77,7 +80,7 @@
         GAME.userSummary(username, game),
         GAME.trend(username, game),
         DATA.allMusic(game),
-      ]).then(([user, trend, music]) => {
+      ]).then(async ([user, trend, music]) => {
         console.log(user)
         console.log(trend)
         console.log(games)
@@ -90,6 +93,11 @@
             it.beforeRating /= 10
             it.afterRating /= 10
           })
+        }
+
+        if (game == 'ongeki') {
+          let ogkData = await GAME.refreshData(username).catch(err => {});
+          if(ogkData) ongekiData = ogkData
         }
 
         // Set beforeRating in recent to the last play's afterRating
@@ -187,14 +195,28 @@
       <div class="scoring-info">
         <div class="chart">
           <div class="info-top">
-            <div class="rating">
-              <span>{game === 'mai2' ? t("UserHome.DXRating"): t("UserHome.Rating")}</span>
-              <span>{
-                game === 'chu3' || game === 'ongeki' ?
-                  (d.user.rating / 100).toFixed(2) :
-                  d.user.rating.toLocaleString()
-              }</span>
-            </div>
+            
+
+            {#if game == "ongeki" && ongekiData}
+              <!-- display modern (refresh) and legacy rating -->
+              <div class="rating">
+                <span>{t("UserHome.ModernRating")}</span>
+                <span>{ongekiData.playerRating.toLocaleString()}</span>
+              </div>
+              <div class="rating">
+                <span>{t("UserHome.LegacyRating")}</span>
+                <span>{(d.user.rating / 100).toFixed(2)}</span>
+              </div>
+            {:else}
+              <div class="rating">
+                <span>{game === 'mai2' ? t("UserHome.DXRating"): t("UserHome.Rating")}</span>
+                <span>{
+                  game === 'chu3' ?
+                    (d.user.rating / 100).toFixed(2) :
+                    d.user.rating.toLocaleString()
+                }</span>
+              </div>
+            {/if}
 
             <div class="rank">
               <span>{t('UserHome.ServerRank')}</span>
@@ -306,18 +328,20 @@
       </div>
     </div>
 
-    <!-- I don't like doing this but it may be preferable to gaslighting the types -->
+    <RatingComposition title={t("UserHome.RatingComposition.Best50")} comp={d.user.ratingComposition.best50} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.Best35")} comp={d.user.ratingComposition.best35} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.Best30")} comp={d.user.ratingComposition.best30} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.Best15")} comp={d.user.ratingComposition.best15} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.New15")} comp={d.user.ratingComposition.new15} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.New10")} comp={d.user.ratingComposition.new10} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.Best25Candidates")} comp={d.user.ratingComposition.best25_candidates} {allMusics} {game}/>
+    <RatingComposition title={t("UserHome.RatingComposition.Platinum")} comp={d.user.ratingComposition.pscore} {allMusics} {game}/>
 
-    <RatingComposition title="B30" comp={d.user.ratingComposition.best30} {allMusics} {game}/>
-    <RatingComposition title="B35" comp={d.user.ratingComposition.best35} {allMusics} {game}/>
-    <RatingComposition title="B15" comp={d.user.ratingComposition.best15} {allMusics} {game}/>
-    <!-- <RatingComposition title="Hot 10" comp={d.user.ratingComposition.hot10} {allMusics} {game}/> -->
-    <!-- <RatingComposition title="N10" comp={d.user.ratingComposition.next10} {allMusics} {game}/> -->
      <!-- Chuni -->
     {#if d.user.ratingComposition.new}
-      <RatingComposition title="New 20" comp={d.user.ratingComposition.new} {allMusics} game="chu3"/>
+      <RatingComposition title={t("UserHome.RatingComposition.New20")} comp={d.user.ratingComposition.new} {allMusics} game="chu3"/>
     {:else}
-      <RatingComposition title="Recent 10" comp={d.user.ratingComposition.recent10} {allMusics} {game} top={10}/>
+      <RatingComposition title={t("UserHome.RatingComposition.Recent10")} comp={d.user.ratingComposition.recent10} {allMusics} {game} top={10}/>
     {/if}
 
     <div class="recent">

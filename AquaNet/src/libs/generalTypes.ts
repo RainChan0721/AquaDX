@@ -93,7 +93,7 @@ export interface GenericGameSummary {
   name: string
   iconId: number
   aquaUser?: AquaNetUser
-  serverRank: number
+  serverRank: string
   accuracy: number
   rating: number
   ratingHighest: number,

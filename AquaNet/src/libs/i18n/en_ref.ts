@@ -254,7 +254,7 @@ export const EN_REF_SETTINGS = {
   'settings.fields.gameUsername.name': 'Player Name',
   'settings.fields.gameUsername.desc': 'Your name shown in game',
   'settings.fields.optOutOfLeaderboard.name': 'Opt Out of Leaderboard',
-  'settings.fields.optOutOfLeaderboard.desc': 'You will still be able to see yourself on the leaderboard after logging in',
+  'settings.fields.optOutOfLeaderboard.desc': 'It may take some time for this to take effect',
   'settings.fields.hideCountry.name': 'Hide Country',
   'settings.fields.hideCountry.desc': 'Your country of registration will not be visible on your profile',
   'settings.fields.displayCandidates.name': 'Display Candidates',

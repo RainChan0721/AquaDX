@@ -208,10 +208,12 @@
               </div>
             {/if}
 
-            <div class="rank">
-              <span>{t('UserHome.ServerRank')}</span>
-              <span>#{(d.user.serverRank).toLocaleString()}</span>
-            </div>
+            {#if !isNaN(parseInt(d.user.serverRank))}
+              <div class="rank">
+                <span>{t('UserHome.ServerRank')}</span>
+                <span>#{(d.user.serverRank).toLocaleString()}</span>
+              </div>
+            {/if}
           </div>
 
           <div class="trend">

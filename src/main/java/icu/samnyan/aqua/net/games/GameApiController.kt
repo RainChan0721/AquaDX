@@ -93,7 +93,7 @@ abstract class GameApiController<T : IUserData>(val name: String, userDataClass:
                      LEFT JOIN aqua_net_user a ON c.net_user_id = a.au_id
                 GROUP BY p.user_id, u.player_rating
                 HAVING NOT hide ${if (name == "ongeki") "AND rating > 0" else "" /* Hide users on Ongeki 1.45 and below */}
-                ORDER BY u.player_rating DESC;
+                ORDER BY rating DESC;
             """
         ).exec.mapIndexed { i, it ->
             GenericRankingPlayer(

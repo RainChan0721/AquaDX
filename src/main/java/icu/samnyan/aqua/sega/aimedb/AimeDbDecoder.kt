@@ -28,11 +28,8 @@ class AimeDbDecoder : ByteToMessageDecoder() {
 
         // Create a byte array to store the encrypted data
         val d = input.readBytes(length)
-        val result = try {
-            AimeDbEncryption.decrypt(d)
-        } finally {
-            d.release()
-        }
+        val result = AimeDbEncryption.decrypt(d)
+        d.release()
 
         val resultMap = mapOf(
             "type" to result.getShortLE(0x04).toInt(),
@@ -53,16 +50,13 @@ class AimeDbDecoder : ByteToMessageDecoder() {
     private fun getLength(input: ByteBuf): Int = try {
         val currentPos = input.readerIndex()
         val result = AimeDbEncryption.decrypt(input)
-        try {
-            // Check the header
-            val header = result.getByte(0).toInt()
-            assert(header == 0x3e) { "AimeDB: Invalid header $header" }
 
-            // Read the length from offset 6
-            result.getShortLE(currentPos + 6).toInt()
-        } finally {
-            result.release()
-        }
+        // Check the header
+        val header = result.getByte(0).toInt()
+        assert(header == 0x3e) { "AimeDB: Invalid header $header" }
+
+        // Read the length from offset 6
+        result.getShortLE(currentPos + 6).toInt()
     } catch (e: Exception) {
         logger.info("AimeDB: Invalid request received")
         logger.debug("AimeDB: Invalid request received: ${input.toString(Charsets.UTF_8)}")

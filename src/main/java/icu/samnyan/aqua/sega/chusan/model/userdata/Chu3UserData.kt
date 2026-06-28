@@ -82,6 +82,9 @@ class Chu3UserData : BaseEntity(), IUserData {
     @JsonIgnore
     var lastLoginDate: LocalDateTime = LocalDateTime.now()
 
+    @JsonIgnore
+    var banState: Int = 0
+
     @JsonDeserialize(using = FlexibleDateTimeDeserializer::class)
     override var lastPlayDate: LocalDateTime = LocalDateTime.now()
     var lastPlaceId = 0

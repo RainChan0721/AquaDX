@@ -163,7 +163,7 @@
           <a href={`/u/${username}/${g}`} class:active={game === g}>{name}</a>
         {/each}
 
-        {#if me && me.username === username}
+        {#if me && me.username.toLowerCase() === username.toLowerCase()}
           <a class="setting-icon clickable" use:tooltip={t("UserHome.Settings")} href={`/settings/${game}`}>
             <Icon icon="eos-icons:rotating-gear"/>
           </a>

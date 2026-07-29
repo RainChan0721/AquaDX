@@ -9413,5 +9413,50 @@
         "id": 19091,
         "type": 11,
         "enable": 1
+    },
+    {
+        "id": 19250,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 19251,
+        "type": 3,
+        "enable": 1
+    },
+    {
+        "id": 19252,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 19253,
+        "type": 2,
+        "enable": 1
+    },
+    {
+        "id": 19254,
+        "type": 8,
+        "enable": 1
+    },
+    {
+        "id": 19255,
+        "type": 1,
+        "enable": 1
+    },
+    {
+        "id": 19256,
+        "type": 2,
+        "enable": 1
+    },
+    {
+        "id": 19257,
+        "type": 8,
+        "enable": 1
+    },
+    {
+        "id": 19258,
+        "type": 11,
+        "enable": 1
     }
 ]

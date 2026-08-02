@@ -68,7 +68,7 @@ class Mai2Import(
                 ?.split(",")
                 ?.mapIndexed { index, id -> Mai2UserFavoriteItem().apply { orderId = index; this.id = id.toInt() } }
                 ?: emptyList()
-        }
+        },
     ) as Map<kotlin.reflect.KMutableProperty1<Maimai2DataExport, Any>, (Mai2UserDetail, ExportOptions) -> Any?>,
     customImporters = mapOf(
         Maimai2DataExport::userPlaylogList to { export: Maimai2DataExport, user: Mai2UserDetail ->
@@ -85,7 +85,7 @@ class Mai2Import(
                     propertyValue = favoriteMusicList.sortedBy { it.orderId }.map { it.id }.joinToString(",")
                 })
             }
-        }
+        },
     ) as Map<kotlin.reflect.KMutableProperty1<Maimai2DataExport, Any>, (Maimai2DataExport, Mai2UserDetail) -> Unit>
 ) {
     override fun createEmpty() = Maimai2DataExport()
@@ -113,6 +113,9 @@ data class Maimai2DataExport(
     var userFavoriteMusicList: List<Mai2UserFavoriteItem> = mutableListOf(),
     var userKaleidxScopeList: List<Mai2UserKaleidx> = mutableListOf(),
     var userPlaylogList: List<Mai2UserPlaylog> = mutableListOf(),
+    var userCardList: List<Mai2UserCard> = mutableListOf(),
+    var userPrintDetailList: List<Mai2UserPrintDetail> = mutableListOf(),
+    var userRegionsList: List<UserRegions> = mutableListOf(),
     // Not supported yet:
     // var userWeeklyData
     // var userMissionDataList

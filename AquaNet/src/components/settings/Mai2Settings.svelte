@@ -155,12 +155,12 @@
         let lamp = null;
         if (score.isAllPerfect) {
           lamp = "ALL PERFECT";
-          if (score.percent == 101.0) {
+          if (score.percent >= 101.0) {
             lamp = "ALL PERFECT+";
           }
         } else if (score.isFullCombo) {
           lamp = "FULL COMBO";
-          if (good == 0 && great == 0) {
+          if (!good) {
             lamp = "FULL COMBO+";
           }
         } else if (score.isClear) {

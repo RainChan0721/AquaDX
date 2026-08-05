@@ -48,7 +48,7 @@ function addOrUpdateItem(ini: string[], section: string, key: string, value: str
 }
 
 export function injectNetworkData(baseIni: string, networkData: NetworkData): string {
-    let ini: string[] = baseIni.split("\n").map(i => i.replaceAll("\r", ""));
+    let ini: string[] = baseIni.split("\n").map(i => i.trim().replaceAll("\r", ""));
     
     if (networkData.dns)
         addOrUpdateItem(ini, "dns", "default", networkData.dns);

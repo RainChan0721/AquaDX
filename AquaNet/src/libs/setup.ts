@@ -27,7 +27,7 @@ function addOrUpdateItem(ini: string[], section: string, key: string, value: str
             let key = item.split("=")[0];
             let value = item.split("=")[1];
 
-            if (!key || !value)
+            if (!key)
                 continue;
             
             if (activeSection && sections[activeSection])

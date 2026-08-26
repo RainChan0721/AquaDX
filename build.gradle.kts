@@ -179,6 +179,7 @@ tasks.named<Jar>("jar") {
 sourceSets {
     main {
         java.srcDir("${layout.buildDirectory.get()}/generated/source/kapt/main")
+        java.srcDir("${layout.buildDirectory.get()}/generated/source/kaptKotlin/main")
     }
 }
 

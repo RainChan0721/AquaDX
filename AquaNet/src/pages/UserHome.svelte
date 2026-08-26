@@ -53,6 +53,8 @@
 
 
   function init() {
+    if (!username) return;
+    error = "";
     USER.isLoggedIn() && USER.me().then(u => me = u)
 
     CARD.userGames(username).then(games => {
@@ -122,8 +124,10 @@
     }).catch((e) => { error = e.message; console.error(e) } );
   }
 
-  if (Object.keys(GAME_TITLE).includes(game) || !game) init()
-  else error = t("UserHome.InvalidGame", {game})
+  $: if (username) {
+    if (Object.keys(GAME_TITLE).includes(game) || !game) init()
+    else error = t("UserHome.InvalidGame", {game})
+  }
 
   const setRival = (isAdd: boolean) => {
     isLoading = true

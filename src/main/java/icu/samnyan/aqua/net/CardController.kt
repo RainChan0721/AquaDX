@@ -55,7 +55,9 @@ class CardController(
 
     @API("/user-games")
     @Doc("Get the game summary of the user, including the user's name, rating, and last login date.", "Summary of the user")
-    suspend fun userGames(@RP username: Str) = us.cardByName(username) { card -> cardGameService.getSummary(card) }
+    suspend fun userGames(@RP username: Str) =
+        if (username.isBlank()) emptyMap<String, Any?>()
+        else us.cardByName(username) { card -> cardGameService.getSummary(card) }
 
     /**
      * Bind a card to the user. This action will migrate selected data from the card to the user's ghost card.
@@ -67,7 +69,6 @@ class CardController(
      * @param migrate Things to migrate, stored as a comma-separated list of game IDs (e.g. "maimai2,chusan")
      */
     @API("/link")
-    @Doc("Bind a card to the user. This action will migrate selected data from the card to the user's ghost card.", "Success message")
     suspend fun link(@RP token: Str, @RP cardId: Str, @RP migrate: Str): Any = jwt.auth(token) { u ->
         // Check if the user's card limit is reached
         if (u.cards.size >= props.linkCardLimit) 400 - "Card limit reached"
@@ -93,7 +94,6 @@ class CardController(
         // If card is already bound
         if (card.aquaUser != null) 400 - "Card already bound to another user"
 
-        // Bind the card
         card.aquaUser = u
         async { cardRepository.save(card) }
 

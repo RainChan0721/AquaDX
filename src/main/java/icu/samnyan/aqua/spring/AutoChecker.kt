@@ -78,7 +78,8 @@ class AutoChecker(
                                 .build()).buildClassic()).build()).build()
             }.let { RestTemplate(it) }
 
-            val url = "https://${aimedb.address}:$BILLING_PORT/sys/test"
+            val address = if (aimedb.address == "0.0.0.0") "127.0.0.1" else aimedb.address
+            val url = "https://$address:$BILLING_PORT/sys/test"
             val resp = rt.getForEntity(url, String::class.java)
             if (resp.statusCode.is2xxSuccessful && resp.body == "Server running") {
                 println(SUCCESS)

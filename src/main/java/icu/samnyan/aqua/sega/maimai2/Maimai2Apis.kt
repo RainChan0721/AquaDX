@@ -83,7 +83,7 @@ fun Maimai2ServletController.initApis() {
             "userId" to uid,
             "userName" to it.userName,
             "rating" to it.playerRating,
-            "lastDataVersion" to it.lastDataVersion,
+            "lastDataVersion" to (if (it.lastDataVersion.isBlank() || it.lastDataVersion.length < 6) "1.45.00" else it.lastDataVersion),
             "isLogin" to false,
             "isExistSellingCard" to db.gameSellingCard.findAll().isNotEmpty()
         )

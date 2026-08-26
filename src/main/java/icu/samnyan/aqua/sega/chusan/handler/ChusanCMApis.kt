@@ -21,7 +21,7 @@ fun ChusanController.cmApiInit() {
 
     "CMGetUserPreview" {
         val user = db.userData.findByCard_ExtId(uid) ?: (400 - "User not found")
-        mapOf("userName" to user.userName, "level" to user.level, "medal" to user.medal, "lastDataVersion" to user.lastDataVersion, "isLogin" to false)
+        mapOf("userName" to user.userName, "level" to user.level, "medal" to user.medal, "lastDataVersion" to (if (user.lastDataVersion.isBlank() || user.lastDataVersion.length < 6) "2.25.00" else user.lastDataVersion), "isLogin" to false)
     }
 
     "CMUpsertUserGacha" api@ {

@@ -38,10 +38,10 @@ class CardMakerController(
         val rebootEndTime = LocalDateTime.now().minusHours(2)
 
         val gameSetting = mapOf(
-            "dataVersion" to "1.35.0",
-            "ongekiCmVersion" to "1.32.0",
-            "chuniCmVersion" to "1.30.0",
-            "maimaiCmVersion" to "1.45.0",
+            "dataVersion" to "1.35.00",
+            "ongekiCmVersion" to "1.45.01",
+            "chuniCmVersion" to "2.25.00",
+            "maimaiCmVersion" to "1.45.00",
             "isMaintenance" to false,
             "requestInterval" to 1,
             "rebootStartTime" to rebootStartTime.format(formatter),

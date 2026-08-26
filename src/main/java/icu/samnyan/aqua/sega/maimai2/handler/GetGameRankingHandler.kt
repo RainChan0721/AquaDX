@@ -39,7 +39,7 @@ class GetGameRankingHandler(
         val queryAfterStr = queryAfter.format(formatter)
 
         val results = em.createQuery(
-            "SELECT p.musicId, count(distinct p.user.id) FROM Maimai2UserPlaylog p WHERE p.userPlayDate >= :queryAfter GROUP BY p.musicId ORDER BY count(distinct p.user.id) DESC",
+            "SELECT p.musicId, count(distinct p.user.id) FROM Mai2UserPlaylog p WHERE p.userPlayDate >= :queryAfter GROUP BY p.musicId ORDER BY count(distinct p.user.id) DESC",
             Array<Any>::class.java
         )
             .setParameter("queryAfter", queryAfterStr)

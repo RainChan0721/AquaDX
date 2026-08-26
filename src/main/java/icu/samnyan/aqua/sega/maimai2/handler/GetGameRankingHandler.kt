@@ -1,11 +1,12 @@
 package icu.samnyan.aqua.sega.maimai2.handler
 
-import com.querydsl.jpa.impl.JPAQueryFactory
+import ext.int
 import ext.logger
+import ext.long
 import ext.thread
 import icu.samnyan.aqua.sega.allnet.TokenChecker
 import icu.samnyan.aqua.sega.general.BaseHandler
-import icu.samnyan.aqua.sega.maimai2.model.userdata.QMai2UserPlaylog
+import jakarta.persistence.EntityManager
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -17,7 +18,7 @@ import kotlin.concurrent.Volatile
  */
 @Component("Maimai2GetGameRankingHandler")
 class GetGameRankingHandler(
-    private val queryFactory: JPAQueryFactory
+    private val em: EntityManager
 ) : BaseHandler {
     private data class MusicRankingItem(val musicId: Int, val weight: Long)
 
@@ -37,18 +38,17 @@ class GetGameRankingHandler(
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val queryAfterStr = queryAfter.format(formatter)
 
-        val qPlaylog = QMai2UserPlaylog.mai2UserPlaylog
-        val cMusicId = qPlaylog.musicId
-        val cUserCount = qPlaylog.user.id.countDistinct()
-        musicRankingCache = queryFactory
-            .select(cMusicId, cUserCount)
-            .from(qPlaylog)
-            .where(qPlaylog.userPlayDate.stringValue().goe(queryAfterStr))
-            .groupBy(cMusicId)
-            .orderBy(cUserCount.desc())
-            .limit(QUERY_LIMIT)
-            .fetch()
-            .map { MusicRankingItem(it.get(cMusicId)!!, it.get(cUserCount)!!) }
+        val results = em.createQuery(
+            "SELECT p.musicId, count(distinct p.user.id) FROM Maimai2UserPlaylog p WHERE p.userPlayDate >= :queryAfter GROUP BY p.musicId ORDER BY count(distinct p.user.id) DESC",
+            Array<Any>::class.java
+        )
+            .setParameter("queryAfter", queryAfterStr)
+            .setMaxResults(QUERY_LIMIT.toInt())
+            .resultList
+
+        musicRankingCache = results.map { row ->
+            MusicRankingItem(row[0].int, row[1].long)
+        }
 
         log.info("Refreshed music ranking cache: ${musicRankingCache.size} items")
     }

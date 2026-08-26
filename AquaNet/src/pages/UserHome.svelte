@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from "svelte";
   import { CHARTJS_OPT, coverNotFound, pfpNotFound, registerChart, renderCal, title, tooltip, pfp } from "../libs/ui";
   import type {
     GenericGamePlaylog,
@@ -110,10 +111,13 @@
           validGames: Object.entries(GAME_TITLE).filter(g => games[g[0] as GameName])
         }
         allMusics = music
-        renderCal(calElement, trend.map(it => {return {date: it.date, value: it.plays}})).then(() => {
-          // Scroll to the rightmost
-          calElement.scrollLeft = calElement.scrollWidth - calElement.clientWidth
-        })
+        await tick()
+        if (calElement) {
+          renderCal(calElement, trend.map(it => {return {date: it.date, value: it.plays}})).then(() => {
+            // Scroll to the rightmost
+            calElement.scrollLeft = calElement.scrollWidth - calElement.clientWidth
+          }).catch(console.error)
+        }
       }).catch((e) => error = e.message);
     }).catch((e) => { error = e.message; console.error(e) } );
   }

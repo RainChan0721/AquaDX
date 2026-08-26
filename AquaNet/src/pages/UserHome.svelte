@@ -56,21 +56,23 @@
 
     CARD.userGames(username).then(games => {
       if (!game) {
-        let targetGames = Object.entries(games)
+        let validEntries = Object.entries(games).filter(d => !!d[1])
+        if (validEntries.length === 0) return error = t("UserHome.NoValidGame")
+        let targetGames = validEntries
         .map(d => {
-          if (d[1])
-          d[1].lastLogin = d[1].lastLogin ? new Date(d[1].lastLogin) : new Date(0);
+          d[1]!.lastLogin = d[1]!.lastLogin ? new Date(d[1]!.lastLogin) : new Date(0);
           return d;
         }).sort((a,b) => {
-          return b[1]?.lastLogin - a[1]?.lastLogin;
+          return (b[1]?.lastLogin?.getTime?.() ?? 0) - (a[1]?.lastLogin?.getTime?.() ?? 0);
         });
         game = targetGames[0][0] as GameName;
       }
       if (!games[game]) {
         // Find a valid game
-        const valid = Object.entries(games).filter(([g, valid]) => valid)
+        const valid = Object.entries(games).filter(([g, valid]) => !!valid)
         if (!valid || !valid[0]) return error = t("UserHome.NoValidGame")
         window.location.href = `/u/${username}/${valid[0][0]}`
+        return
       }
 
       Promise.all([

@@ -28,7 +28,9 @@
     "ongeki": OngekiSettings, "global": GeneralGameSettings
   }
 
-  if (!pages[page] && page)
+  $: activePage = page || "profile"
+
+  $: if (!pages[activePage])
     error = t("404", {pathname: new URL(location.href).pathname});
 
   let userGames: GameName[] = [];
@@ -48,7 +50,7 @@
     <nav>
       {#each Object.entries(pages).filter(v => v[0] == "profile" || v[0] == "global" || userGames.includes(v[0] as GameName)) as tab}
         <a href={`/settings/${tab[0] != "profile" ? tab[0] : ""}`} transition:slide={{axis: 'x'}} 
-          class:active={tab[0] == page || (tab[0] == "profile" && !page)} role="button" tabindex="0">
+          class:active={tab[0] == activePage} role="button" tabindex="0">
           {ts(`settings.tabs.${tab[0]}`)}
         </a>
       {/each}
@@ -56,11 +58,11 @@
   </div>
 
   <h2 class="header">
-    {t('settings.page-title', {page: ts(`settings.tabs.${page}`)})}
+    {t('settings.page-title', {page: ts(`settings.tabs.${activePage}`)})}
   </h2>
 
-  {#if pages[page]}
-    <svelte:component this={pages[page]} />
+  {#if pages[activePage]}
+    <svelte:component this={pages[activePage]} />
   {/if}
 </main>
 <StatusOverlays {error} />

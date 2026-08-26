@@ -47,6 +47,7 @@ interface Mai2UserCourseRepo : Mai2UserLinked<Mai2UserCourse> {
 }
 
 interface Mai2UserDataRepo : GenericUserDataRepo<Mai2UserDetail> {
+    @Query("select u from Maimai2UserData u where u.card.extId = :userId")
     fun findByCardExtId(userId: Long): Mai2UserDetail?
 
     @Modifying

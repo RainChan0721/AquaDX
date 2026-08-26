@@ -114,6 +114,16 @@ class CardMakerController(
     @API("UpsertClientTestmodeApi", "UpsertClientTestmode")
     fun upsertClientTestmode() = "{\"returnCode\":1,\"apiName\":\"UpsertClientTestmodeApi\"}"
 
+    @API("GetGameTitleStopApi", "GetGameTitleStop")
+    fun getGameTitleStop(@ModelAttribute request: MutableMap<String, Any>): Any? {
+        val json = mapper.write(mapOf(
+            "length" to 0,
+            "gameTitleStopList" to emptyList<Any>()
+        ))
+        logger.info("Response: $json")
+        return json
+    }
+
     @API("Ping")
     fun ping() = "{\"returnCode\":1,\"apiName\":\"Ping\"}"
 }

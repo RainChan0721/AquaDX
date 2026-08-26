@@ -85,7 +85,7 @@ fun Maimai2ServletController.initApis() {
             "rating" to it.playerRating,
             "lastDataVersion" to it.lastDataVersion,
             "isLogin" to false,
-            "isExistSellingCard" to false
+            "isExistSellingCard" to db.gameSellingCard.findAll().isNotEmpty()
         )
     } ?: (404 - "User not found") }
 

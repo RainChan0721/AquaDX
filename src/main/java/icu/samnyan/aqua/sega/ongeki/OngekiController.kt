@@ -19,7 +19,7 @@ import javax.crypto.spec.PBEKeySpec
 
 @Suppress("unused")
 @RestController
-@API("/g/SDDT/{version}", "/g/SDDT")
+@API("/g/SDDT/{version}/OngekiServlet", "/g/SDDT/{version}", "/g/SDDT/OngekiServlet", "/g/SDDT", "/OngekiServlet")
 class OngekiController(
     val mapper: BasicMapper,
     val db: OngekiUserRepos,
@@ -59,7 +59,12 @@ class OngekiController(
         log.info("$token : $apiFriendlyName < ${data.toJson()}")
 
         val noop = """{"returnCode":1,"apiName":"${api.substringBefore("Api").firstCharLower()}"}"""
-        if (!handlers.containsKey(api)) {
+        val handler = handlers[api]
+            ?: handlers["${api}Api"]
+            ?: (if (api.startsWith("CM")) handlers[api.removePrefix("CM")] ?: handlers["${api.removePrefix("CM")}Api"] else null)
+            ?: (if (!api.startsWith("CM")) handlers["CM$api"] ?: handlers["CM${api}Api"] else null)
+
+        if (handler == null) {
             log.warn("$token : $apiFriendlyName > not found")
             return noop
         }
@@ -69,7 +74,7 @@ class OngekiController(
 
         return try {
             Metrics.timer("aquadx_ongeki_api_latency", "api" to api).recordCallable {
-                serialize(api, handlers[api]!!(ctx) ?: noop).also {
+                serialize(api, handler(ctx) ?: noop).also {
                     if (api !in setOf("GetUserItemApi", "GetGameEventApi"))
                         log.info("$token : $apiFriendlyName > ${it.truncate(500)}")
                 }

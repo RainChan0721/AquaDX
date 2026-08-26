@@ -26,6 +26,12 @@ class CardMakerControllerAdvice {
         val src = request.inputStream.readAllBytes()
         val outputString = String(src, StandardCharsets.UTF_8).trim { it <= ' ' }
         logger.info("Request ${request.requestURI}: $outputString")
-        return mapper.readValue(outputString, object : TypeReference<MutableMap<String, Any>>() {})
+        if (outputString.isBlank()) return mutableMapOf()
+        return try {
+            mapper.readValue(outputString, object : TypeReference<MutableMap<String, Any>>() {})
+        } catch (e: Exception) {
+            logger.warn("Failed to parse request JSON from ${request.requestURI}: ${e.message}")
+            mutableMapOf()
+        }
     }
 }

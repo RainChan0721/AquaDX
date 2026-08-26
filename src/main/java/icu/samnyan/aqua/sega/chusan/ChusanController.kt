@@ -73,12 +73,16 @@ class ChusanController(
         val apiFriendlyName = if (api.lowercase() == api && api.length == 32)
             ((hashes.filter { it.value.contains(api) }.keys.firstOrNull()?.str ?: api) + " (encrypt)") else api
 
-        if (api.startsWith("CM") && api !in handlers) api = api.removePrefix("CM")
+        val handler = handlers[api]
+            ?: handlers["${api}Api"]
+            ?: (if (api.startsWith("CM")) handlers[api.removePrefix("CM")] ?: handlers["${api.removePrefix("CM")}Api"] else null)
+            ?: (if (!api.startsWith("CM")) handlers["CM$api"] ?: handlers["CM${api}Api"] else null)
+
         val token = TokenChecker.tokenShort()
         log.info("$token : $apiFriendlyName < ${data.toJson()}")
 
         val noop = """{"returnCode":"1","apiName":"$api"}"""
-        if (!handlers.containsKey(api)) {
+        if (handler == null) {
             log.warn("$token : $apiFriendlyName > not found")
             return noop
         }
@@ -88,7 +92,7 @@ class ChusanController(
 
         return try {
             Metrics.timer("aquadx_chusan_api_latency", "api" to api).recordCallable {
-                serialize(api, handlers[api]!!(ctx) ?: noop).also {
+                serialize(api, handler(ctx) ?: noop).also {
                     if (api !in setOf("GetUserItemApi", "GetGameEventApi"))
                         log.info("$token : $apiFriendlyName > ${it.truncate(500)}")
                 }

@@ -90,7 +90,12 @@ class Maimai2ServletController(
         log.info("$token : $apiFriendlyName < ${data.toJson()}")
 
         val noop = """{"returnCode":1,"apiName":"com.sega.maimai2servlet.api.$api"}"""
-        if (!handlers.containsKey(api)) {
+        val handler = handlers[api]
+            ?: handlers["${api}Api"]
+            ?: (if (api.startsWith("CM")) handlers[api.removePrefix("CM")] ?: handlers["${api.removePrefix("CM")}Api"] else null)
+            ?: (if (!api.startsWith("CM")) handlers["CM$api"] ?: handlers["CM${api}Api"] else null)
+
+        if (handler == null) {
             log.warn("$token : $apiFriendlyName > not found")
             return noop
         }
@@ -101,7 +106,7 @@ class Maimai2ServletController(
         return try {
             Metrics.timer("aquadx_maimai2_api_latency", "api" to api).recordCallable {
                 val ctx = RequestContext(req, data.mut)
-                serialize(api, handlers[api]!!(ctx) ?: noop).also {
+                serialize(api, handler(ctx) ?: noop).also {
                     log.info("$token : $apiFriendlyName > ${it.truncate(500)}")
                 }
             }

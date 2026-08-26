@@ -19,16 +19,19 @@ import java.time.format.DateTimeFormatter
  * @author samnyan (privateamusement@protonmail.com)
  */
 @RestController
-@RequestMapping("/g/SDED/{version}")
+@RequestMapping(path = [
+    "/g/SDED/{version}/CardMakerServlet", "/g/SDED/{version}/CardMakerServlet/",
+    "/g/SDED/{version}", "/g/SDED/{version}/",
+    "/CardMakerServlet", "/CardMakerServlet/"
+])
 class CardMakerController(
     val mapper: BasicMapper,
-    @param:Value("\${allnet.server.host:}") val ALLNET_HOST: String,
-    @param:Value("\${allnet.server.port:}") val ALLNET_PORT: String,
+    val allNetProps: icu.samnyan.aqua.sega.allnet.AllNetProps,
     @param:Value("\${server.port:}") val SERVER_PORT: String
 ) {
     val logger = logger()
 
-    @API("GetGameSettingApi")
+    @API("GetGameSettingApi", "GetGameSetting")
     fun getGameSetting(@ModelAttribute request: MutableMap<String, Any>): Any? {
         val formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss")
         val rebootStartTime = LocalDateTime.now().minusHours(3)
@@ -44,9 +47,9 @@ class CardMakerController(
             "rebootStartTime" to rebootStartTime.format(formatter),
             "rebootEndTime" to rebootEndTime.format(formatter),
             "isBackgroundDistribute" to false,
-            "maxCountCharacter" to 100,
-            "maxCountItem" to 100,
-            "maxCountCard" to 100,
+            "maxCountCharacter" to 300,
+            "maxCountItem" to 300,
+            "maxCountCard" to 300,
             "watermark" to false
         )
 
@@ -63,23 +66,25 @@ class CardMakerController(
     fun gameConnect(modelKind: Int, type: Int, titleUri: String) =
     mapOf("modelKind" to modelKind, "type" to type, "titleUri" to titleUri)
 
-    @API("GetGameConnectApi")
+    @API("GetGameConnectApi", "GetGameConnect")
     fun getGameConnect(@ModelAttribute request: MutableMap<String, Any>): Any? {
-        val version = parsing { request["version"]!!.long } // Rom version
-        val session = TokenChecker.Companion.getCurrentSession()
+        val version = request["version"]?.toString() ?: "1.30.00"
+        val session = TokenChecker.getCurrentSession()
 
-        val addr = ALLNET_HOST.ifBlank { null } ?:
+        val host = allNetProps.host.ifBlank { null } ?:
         try { InetAddress.getLocalHost().hostAddress }
         catch (_: UnknownHostException) { "localhost" }
-        val port = ALLNET_PORT.ifBlank { null } ?: SERVER_PORT
+        val port = allNetProps.port?.toString() ?: SERVER_PORT
+        val protocol = if (allNetProps.tls) "https" else "http"
+        val hostPort = if (allNetProps.hidePort || port.isBlank()) host else "$host:$port"
 
         val base = if (session == null) "/g" else "/gs/" + session.token
         val json = mapper.write(mapOf(
             "length" to 3,
             "gameConnectList" to listOf(
-                gameConnect(0, 1, "http://$addr:$port$base/SDHD/$version/"),
-                gameConnect(1, 1, "http://$addr:$port$base/SDEZ/$version/"),
-                gameConnect(2, 1, "http://$addr:$port$base/SDDT/$version/")
+                gameConnect(0, 1, "$protocol://$hostPort$base/SDHD/$version/"),
+                gameConnect(1, 1, "$protocol://$hostPort$base/SDEZ/$version/"),
+                gameConnect(2, 1, "$protocol://$hostPort$base/SDDT/$version/")
             )
         ))
 
@@ -87,9 +92,9 @@ class CardMakerController(
         return json
     }
 
-    @API("GetClientBookkeepingApi")
+    @API("GetClientBookkeepingApi", "GetClientBookkeeping")
     fun getClientBookkeeping(@ModelAttribute request: MutableMap<String, Any>): Any? {
-        val placeId = parsing { request["placeId"]!!.long }
+        val placeId = request["placeId"]?.let { parsing { it.long } } ?: 0L
         val json = mapper.write(mapOf(
             "placeId" to placeId,
             "length" to 0,
@@ -100,9 +105,15 @@ class CardMakerController(
         return json
     }
 
-    @API("UpsertClientBookkeepingApi")
+    @API("UpsertClientBookkeepingApi", "UpsertClientBookkeeping")
     fun upsertClientBookkeeping() = "{\"returnCode\":1,\"apiName\":\"UpsertClientBookkeepingApi\"}"
 
-    @API("UpsertClientSettingApi")
+    @API("UpsertClientSettingApi", "UpsertClientSetting")
     fun upsertClientSetting() = "{\"returnCode\":1,\"apiName\":\"UpsertClientSettingApi\"}"
+
+    @API("UpsertClientTestmodeApi", "UpsertClientTestmode")
+    fun upsertClientTestmode() = "{\"returnCode\":1,\"apiName\":\"UpsertClientTestmodeApi\"}"
+
+    @API("Ping")
+    fun ping() = "{\"returnCode\":1,\"apiName\":\"Ping\"}"
 }

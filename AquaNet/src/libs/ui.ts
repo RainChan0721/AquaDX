@@ -82,6 +82,7 @@ const dayTemplate = (DateHelper: any) => {
 }
 
 export function renderCal(el: HTMLElement, d: { date: any, value: any }[]): Promise<any> {
+  el.innerHTML = ''
   const cal = new CalHeatmap()
   cal.addTemplates(dayTemplate)
   return cal.paint({

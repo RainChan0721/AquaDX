@@ -69,6 +69,7 @@
           return (b[1]?.lastLogin?.getTime?.() ?? 0) - (a[1]?.lastLogin?.getTime?.() ?? 0);
         });
         game = targetGames[0][0] as GameName;
+        lastLoadedKey = `${username}_${game}`;
       }
       if (!games[game]) {
         // Find a valid game
@@ -124,9 +125,15 @@
     }).catch((e) => { error = e.message; console.error(e) } );
   }
 
+  let lastLoadedKey = ""
+
   $: if (username) {
-    if (Object.keys(GAME_TITLE).includes(game) || !game) init()
-    else error = t("UserHome.InvalidGame", {game})
+    const key = `${username}_${game}`
+    if (key !== lastLoadedKey) {
+      lastLoadedKey = key
+      if (Object.keys(GAME_TITLE).includes(game) || !game) init()
+      else error = t("UserHome.InvalidGame", {game})
+    }
   }
 
   const setRival = (isAdd: boolean) => {

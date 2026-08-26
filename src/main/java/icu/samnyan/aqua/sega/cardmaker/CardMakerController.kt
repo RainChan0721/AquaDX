@@ -39,9 +39,9 @@ class CardMakerController(
 
         val gameSetting = mapOf(
             "dataVersion" to "1.35.00",
-            "ongekiCmVersion" to "1.45.01",
+            "ongekiCmVersion" to "1.55.00",
             "chuniCmVersion" to "2.25.00",
-            "maimaiCmVersion" to "1.45.00",
+            "maimaiCmVersion" to "1.65.00",
             "isMaintenance" to false,
             "requestInterval" to 1,
             "rebootStartTime" to rebootStartTime.format(formatter),

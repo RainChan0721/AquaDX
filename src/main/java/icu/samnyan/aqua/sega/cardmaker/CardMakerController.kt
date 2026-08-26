@@ -43,7 +43,7 @@ class CardMakerController(
             "chuniCmVersion" to "1.30.0",
             "maimaiCmVersion" to "1.45.0",
             "isMaintenance" to false,
-            "requestInterval" to 10,
+            "requestInterval" to 1,
             "rebootStartTime" to rebootStartTime.format(formatter),
             "rebootEndTime" to rebootEndTime.format(formatter),
             "isBackgroundDistribute" to false,

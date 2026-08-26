@@ -14,14 +14,18 @@ fun ChusanController.cmApiInit() {
 
     // CardMaker (TODO: Somebody test this, I don't have a card maker)
     "CMGetUserData" {
-        val user = db.userData.findByCard_ExtId(uid) ?: (400 - "User not found")
+        val user = db.userData.findByCard_ExtId(uid) ?: return@CMGetUserData mapOf("userId" to uid, "userData" to null, "userEmoney" to null)
         user.userEmoney = UserEmoney()
         mapOf("userId" to uid, "userData" to user, "userEmoney" to user.userEmoney)
     }
 
     "CMGetUserPreview" {
-        val user = db.userData.findByCard_ExtId(uid) ?: (400 - "User not found")
-        mapOf("userName" to user.userName, "level" to user.level, "medal" to user.medal, "lastDataVersion" to "2.25.00", "isLogin" to false)
+        val user = db.userData.findByCard_ExtId(uid)
+        if (user == null) {
+            mapOf("userName" to "", "level" to 0, "medal" to 0, "lastDataVersion" to "2.25.00", "isLogin" to false)
+        } else {
+            mapOf("userName" to user.userName, "level" to user.level, "medal" to user.medal, "lastDataVersion" to "2.25.00", "isLogin" to false)
+        }
     }
 
     "CMUpsertUserGacha" api@ {

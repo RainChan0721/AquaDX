@@ -87,7 +87,14 @@ fun Maimai2ServletController.initApis() {
             "isLogin" to false,
             "isExistSellingCard" to db.gameSellingCard.findAll().isNotEmpty()
         )
-    } ?: (404 - "User not found") }
+    } ?: mapOf(
+        "userId" to uid,
+        "userName" to "",
+        "rating" to 0,
+        "lastDataVersion" to "1.65.00",
+        "isLogin" to false,
+        "isExistSellingCard" to false
+    ) }
 
     "GetUserPreview" {
         val d = db.userData.findByCardExtId(uid) ?: (404 - "User not found")

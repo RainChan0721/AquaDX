@@ -6,9 +6,9 @@ import java.time.LocalDateTime
 
 fun OngekiController.cmApiInit() {
     "CMGetUserData" {
-        val user = db.data.findByCard_ExtId(uid) ?: (400 - "User not found")
+        val user = db.data.findByCard_ExtId(uid) ?: return@CMGetUserData mapOf("userId" to uid, "userData" to null)
         if (user.compatibleCmVersion.isBlank()) {
-            user.compatibleCmVersion = "1.35.03"
+            user.compatibleCmVersion = "1.55.00"
         }
         mapOf("userId" to uid, "userData" to user)
     }
@@ -16,9 +16,9 @@ fun OngekiController.cmApiInit() {
     "CMGetUserPreview" api@ {
         val user = db.data.findByCard_ExtId(uid)
         if (user == null) {
-            mapOf("userId" to uid, "userName" to "", "level" to 0, "playerRating" to 0, "lastDataVersion" to "1.35.00", "isLogin" to false)
+            mapOf("userId" to uid, "userName" to "", "level" to 0, "playerRating" to 0, "lastDataVersion" to "1.55.00", "isLogin" to false)
         } else {
-            mapOf("userId" to uid, "userName" to user.userName, "level" to user.level, "playerRating" to user.playerRating, "lastDataVersion" to user.lastDataVersion, "isLogin" to false)
+            mapOf("userId" to uid, "userName" to user.userName, "level" to user.level, "playerRating" to user.playerRating, "lastDataVersion" to "1.55.00", "isLogin" to false)
         }
     }
 

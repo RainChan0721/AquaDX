@@ -6,11 +6,15 @@ import java.time.LocalDateTime
 
 fun OngekiController.cmApiInit() {
     "CMGetUserData" {
-        val user = db.data.findByCard_ExtId(uid) ?: return@CMGetUserData mapOf("userId" to uid, "userData" to null)
-        if (user.compatibleCmVersion.isBlank()) {
-            user.compatibleCmVersion = "1.55.00"
+        val user = db.data.findByCard_ExtId(uid)
+        if (user == null) {
+            mapOf("userId" to uid, "userData" to null)
+        } else {
+            if (user.compatibleCmVersion.isBlank()) {
+                user.compatibleCmVersion = "1.55.00"
+            }
+            mapOf("userId" to uid, "userData" to user)
         }
-        mapOf("userId" to uid, "userData" to user)
     }
 
     "CMGetUserPreview" api@ {

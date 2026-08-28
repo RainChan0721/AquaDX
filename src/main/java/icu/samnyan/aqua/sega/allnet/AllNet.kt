@@ -106,12 +106,10 @@ class AllNet(
         var session: String? = null
 
         val gameId = reqMap["game_id"] ?: return "".also { logger.warn("> Rejected: No game_id provided") }
-        var ver = reqMap["ver"] ?: "1.0"
+        val ver = reqMap["ver"] ?: "1.0"
 
-        if ((ver.toDoubleOrNull() ?: 0.0) < 1.0) {
-            ver = "1.0"
-            logger.warn("> Incoming version was < 1.0, defaulting to 1.0 to allow initial handshake")
-        }
+        if ((ver.toDoubleOrNull() ?: 0.0) < 1.0)
+            return "".also { logger.warn("> Rejected: Version $ver is not allowed (typically bad ICF)") }
 
         // Proper keychip authentication
         if (props.checkKeychip) {
